@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ACD R&T 2027 — IUT de Béthune</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   ACD R&T 2027 — Maquette rapide (HTML/CSS/JS client only)
+   Thème : "parc d'attractions du réseau"
+   ========================================================= */
+:root{
+  --navy:#101935;
+  --navy-2:#1b2650;
+  --cyan:#2de2e6;
+  --yellow:#ffd23f;
+  --coral:#ff5d73;
+  --green:#3ddc84;
+  --paper:#fbf7ef;
+  --ink:#101935;
+  --muted:#5b6380;
+  --card:#ffffff;
+  --radius:18px;
+  --shadow:0 6px 0 var(--navy);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.55}
+h1,h2,h3{font-family:"Bricolage Grotesque",sans-serif;line-height:1.1}
+a{color:inherit}
+.mono{font-family:"JetBrains Mono",monospace}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+section{padding:80px 0}
+.tag{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:.78rem;background:var(--navy);color:var(--cyan);padding:4px 10px;border-radius:99px;margin-bottom:14px}
+.section-title{font-size:clamp(2rem,4vw,2.8rem);margin-bottom:10px}
+.section-sub{color:var(--muted);max-width:620px;margin-bottom:40px}
+
+/* ---------- Header ---------- */
+header{position:sticky;top:0;z-index:50;background:var(--navy);color:#fff;border-bottom:4px solid var(--yellow)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{display:flex;align-items:center;gap:10px;font-family:"Bricolage Grotesque";font-weight:800;font-size:1.2rem;text-decoration:none}
+.logo-badge{width:38px;height:38px;border-radius:10px;background:var(--yellow);color:var(--navy);display:grid;place-items:center;font-size:.9rem;transform:rotate(-6deg)}
+.nav ul{display:flex;gap:6px;list-style:none}
+.nav ul a{text-decoration:none;font-weight:500;font-size:.92rem;padding:8px 12px;border-radius:10px}
+.nav ul a:hover{background:var(--navy-2);color:var(--cyan)}
+.nav .cta{background:var(--coral);color:#fff}
+.burger{display:none;background:none;border:0;color:#fff;font-size:1.6rem;cursor:pointer}
+
+/* ---------- Hero ---------- */
+.hero{background:var(--navy);color:#fff;padding:70px 0 110px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(45,226,230,.18) 1.5px,transparent 1.5px);background-size:26px 26px}
+.hero-grid{position:relative;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center}
+.ping{font-family:"JetBrains Mono";color:var(--green);font-size:.9rem;margin-bottom:18px}
+.ping span{color:var(--cyan)}
+.hero h1{font-size:clamp(2.6rem,6vw,4.4rem);margin-bottom:18px}
+.hero h1 em{font-style:normal;color:var(--yellow);position:relative}
+.hero p.lead{font-size:1.15rem;color:#c9d0ea;max-width:520px;margin-bottom:30px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:32px}
+.chip{background:var(--navy-2);border:1px solid #2e3a6b;padding:8px 14px;border-radius:99px;font-size:.9rem}
+.btns{display:flex;flex-wrap:wrap;gap:14px}
+.btn{display:inline-block;text-decoration:none;font-weight:700;padding:14px 24px;border-radius:14px;border:3px solid var(--navy);transition:transform .15s,box-shadow .15s}
+.btn-yellow{background:var(--yellow);color:var(--navy);box-shadow:0 5px 0 #b48f10}
+.btn-ghost{border-color:var(--cyan);color:var(--cyan)}
+.btn:hover{transform:translateY(-3px)}
+.hero-art{position:relative}
+.hero-art svg{width:100%;height:auto;filter:drop-shadow(0 20px 30px rgba(0,0,0,.35))}
+.wave{position:absolute;bottom:-1px;left:0;width:100%;height:60px}
+
+/* ---------- Countdown ---------- */
+.countdown{display:flex;gap:14px;margin-top:-60px;position:relative;z-index:2;justify-content:center;flex-wrap:wrap}
+.cd-box{background:var(--card);border:3px solid var(--navy);box-shadow:var(--shadow);border-radius:var(--radius);padding:16px 22px;text-align:center;min-width:110px}
+.cd-box b{display:block;font-family:"Bricolage Grotesque";font-size:2.2rem}
+.cd-box small{color:var(--muted);font-family:"JetBrains Mono";font-size:.75rem}
+
+/* ---------- Cards ---------- */
+.card{background:var(--card);border:3px solid var(--navy);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.icon{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:1.6rem;margin-bottom:14px;border:3px solid var(--navy)}
+.bg-y{background:var(--yellow)}.bg-c{background:var(--cyan)}.bg-r{background:var(--coral)}.bg-g{background:var(--green)}
+
+/* ---------- Programme ---------- */
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
+.tab{font-family:"Bricolage Grotesque";font-weight:700;font-size:1rem;background:#fff;border:3px solid var(--navy);border-radius:14px;padding:12px 20px;cursor:pointer}
+.tab small{display:block;font-family:Inter;font-weight:500;font-size:.75rem;color:var(--muted)}
+.tab.active{background:var(--navy);color:#fff;box-shadow:0 5px 0 var(--yellow)}
+.tab.active small{color:var(--cyan)}
+.day{display:none}
+.day.active{display:block}
+.timeline{position:relative;padding-left:30px}
+.timeline::before{content:"";position:absolute;left:9px;top:6px;bottom:6px;width:3px;background:repeating-linear-gradient(var(--navy) 0 8px,transparent 8px 14px)}
+.slot{position:relative;display:grid;grid-template-columns:90px 1fr auto;gap:18px;align-items:center;background:#fff;border:2px solid var(--navy);border-radius:14px;padding:14px 18px;margin-bottom:14px}
+.slot::before{content:"";position:absolute;left:-28px;width:16px;height:16px;border-radius:50%;background:var(--cyan);border:3px solid var(--navy)}
+.slot .time{font-family:"JetBrains Mono";font-weight:500}
+.slot h4{font-size:1.02rem}
+.slot p{font-size:.88rem;color:var(--muted)}
+.pill{font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:99px;border:2px solid var(--navy);white-space:nowrap}
+
+/* ---------- Carte ---------- */
+#carte{background:var(--navy);color:#fff}
+#carte .section-sub{color:#c9d0ea}
+.map-layout{display:grid;grid-template-columns:1.6fr 1fr;gap:28px;align-items:start}
+.map-box{background:#cfe8c8;border:4px solid var(--yellow);border-radius:22px;overflow:hidden;position:relative}
+.map-box svg{display:block;width:100%;height:auto}
+.marker{cursor:pointer;transition:transform .15s;transform-box:fill-box;transform-origin:center}
+.marker:hover,.marker.on{transform:scale(1.2)}
+.pulse{animation:pulse 1.8s infinite;transform-box:fill-box;transform-origin:center}
+@keyframes pulse{0%{opacity:.7;transform:scale(1)}100%{opacity:0;transform:scale(2.4)}}
+.map-info{background:var(--navy-2);border:3px solid var(--cyan);border-radius:18px;padding:24px;min-height:260px}
+.map-info h3{font-size:1.5rem;margin:6px 0 10px;color:var(--yellow)}
+.map-info p{color:#c9d0ea}
+.legend{list-style:none;margin-top:18px;display:grid;gap:8px}
+.legend li{display:flex;gap:10px;align-items:center;font-size:.9rem;cursor:pointer;padding:6px 8px;border-radius:10px}
+.legend li:hover{background:#26336a}
+.legend .dot{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.8rem;color:var(--navy);border:2px solid #fff;flex:none}
+
+/* ---------- Jeux ---------- */
+.game{position:relative;overflow:hidden}
+.game .badge{position:absolute;top:18px;right:-34px;transform:rotate(35deg);background:var(--coral);color:#fff;font-weight:800;font-size:.72rem;padding:4px 40px;border-block:2px solid var(--navy)}
+.game h3{font-size:1.4rem;margin-bottom:8px}
+.game .meta{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.game blockquote{border-left:4px solid var(--yellow);padding-left:12px;font-style:italic;color:var(--muted);font-size:.92rem}
+.game .play{display:inline-block;margin-top:16px;font-weight:700;text-decoration:none;border-bottom:3px solid var(--cyan)}
+
+/* ---------- Infos ---------- */
+.info h3{font-size:1.2rem;margin-bottom:10px}
+.info ul{list-style:none;display:grid;gap:8px;font-size:.93rem}
+.info li{display:flex;gap:8px}
+.info li b{min-width:fit-content}
+.hotel{display:flex;justify-content:space-between;border-bottom:2px dashed #dcd6c8;padding-bottom:6px}
+
+/* ---------- Départements ---------- */
+.dept{text-align:center;padding:22px 16px;transition:transform .15s}
+.dept:hover{transform:rotate(-2deg) translateY(-4px)}
+.dept .big{font-family:"Bricolage Grotesque";font-weight:800;font-size:2rem}
+.dept p{font-size:.85rem;color:var(--muted)}
+.dept.host{background:var(--yellow)}
+
+/* ---------- Inscriptions ---------- */
+.price{text-align:center}
+.price .amount{font-family:"Bricolage Grotesque";font-size:3rem;font-weight:800;margin:10px 0}
+.price ul{list-style:none;text-align:left;margin:16px 0 22px;display:grid;gap:6px;font-size:.92rem}
+.price ul li::before{content:"✓ ";color:var(--green);font-weight:800}
+.price.featured{background:var(--navy);color:#fff;transform:translateY(-10px);box-shadow:0 6px 0 var(--coral)}
+.price.featured li{color:#dfe4f5}
+.steps{display:flex;gap:14px;flex-wrap:wrap;margin-top:36px;counter-reset:s}
+.steps div{flex:1;min-width:200px;background:#fff;border:2px dashed var(--navy);border-radius:14px;padding:16px;font-size:.9rem}
+.steps div::before{counter-increment:s;content:"Étape " counter(s);display:block;font-family:"JetBrains Mono";font-size:.75rem;color:var(--coral);margin-bottom:4px}
+
+/* ---------- Souvenirs ---------- */
+#souvenirs{background:linear-gradient(180deg,var(--paper),#f1e9d8)}
+.polaroids{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-bottom:40px}
+.polaroid{background:#fff;padding:10px 10px 36px;border:2px solid var(--navy);width:170px;box-shadow:0 8px 18px rgba(16,25,53,.18);position:relative}
+.polaroid:nth-child(odd){transform:rotate(-4deg)}.polaroid:nth-child(even){transform:rotate(3deg)}
+.polaroid .ph{height:140px;background:repeating-linear-gradient(45deg,#e7e2d6 0 10px,#efebe2 10px 20px);display:grid;place-items:center;font-size:2rem}
+.polaroid span{position:absolute;bottom:9px;left:0;right:0;text-align:center;font-family:"JetBrains Mono";font-size:.72rem}
+.qr{width:140px;height:140px;background:
+  conic-gradient(var(--navy) 25%,#fff 0 50%,var(--navy) 0 75%,#fff 0) 0 0/28px 28px;
+  border:8px solid #fff;outline:3px solid var(--navy);border-radius:8px;margin-bottom:14px}
+.guestbook .msg{background:var(--yellow);border:2px solid var(--navy);border-radius:4px;padding:12px;font-size:.88rem;transform:rotate(-1deg);margin-bottom:10px}
+.guestbook .msg:nth-child(2){background:var(--cyan);transform:rotate(1.5deg)}
+.guestbook .msg small{display:block;font-family:"JetBrains Mono";margin-top:6px}
+
+/* ---------- Sidebar "plan" ---------- */
+.dl-plan{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:40;background:var(--coral);color:#fff;border:3px solid var(--navy);border-radius:16px;padding:14px 10px;text-decoration:none;font-weight:800;writing-mode:vertical-rl;box-shadow:-4px 4px 0 var(--navy);display:flex;align-items:center;gap:8px;font-size:.9rem}
+.dl-plan:hover{background:var(--navy)}
+
+/* ---------- Footer ---------- */
+footer{background:var(--navy);color:#c9d0ea;padding:50px 0 30px;border-top:4px solid var(--yellow)}
+.foot{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px;margin-bottom:30px}
+footer h4{color:#fff;margin-bottom:10px;font-family:"Bricolage Grotesque"}
+footer ul{list-style:none;display:grid;gap:4px;font-size:.9rem}
+.logos{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+.logos div{border:2px dashed #3b4880;border-radius:10px;padding:10px 14px;font-size:.75rem}
+.credits{border-top:1px solid #2e3a6b;padding-top:18px;font-size:.82rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+/* ---------- Responsive ---------- */
+@media (max-width:900px){
+  .hero-grid,.map-layout,.grid-2,.foot{grid-template-columns:1fr}
+  .grid-3{grid-template-columns:1fr}
+  .grid-4{grid-template-columns:repeat(2,1fr)}
+  .price.featured{transform:none}
+  .nav ul{display:none;position:absolute;top:68px;left:0;right:0;background:var(--navy);flex-direction:column;padding:12px 20px;border-bottom:4px solid var(--yellow)}
+  .nav ul.open{display:flex}
+  .burger{display:block}
+  .slot{grid-template-columns:1fr;gap:6px}
+  .dl-plan{writing-mode:horizontal-tb;top:auto;bottom:16px;right:16px;transform:none}
+  section{padding:60px 0}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="wrap nav">
+    <a href="#" class="logo"><span class="logo-badge">R&T</span> ACD 2027 · Béthune</a>
+    <button class="burger" aria-label="Menu" onclick="document.querySelector('.nav ul').classList.toggle('open')">☰</button>
+    <ul>
+      <li><a href="#programme">Programme</a></li>
+      <li><a href="#carte">Carte du parc</a></li>
+      <li><a href="#jeux">Jeux</a></li>
+      <li><a href="#infos">Infos pratiques</a></li>
+      <li><a href="#decouvrir">L'IUT</a></li>
+      <li><a href="#souvenirs">Souvenirs</a></li>
+      <li><a href="#inscriptions" class="cta">S'inscrire</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="ping">$ ping acd-rt.bethune.fr<br><span>64 bytes from Béthune: icmp_seq=1 ttl=62 time=juin 2027</span></p>
+      <h1>Tous les paquets<br>mènent à <em>Béthune</em>.</h1>
+      <p class="lead">L'Assemblée des Chef·fe·s de Département Réseaux &amp; Télécommunications débarque à l'IUT de Béthune. Plusieurs jours de réunions, de rencontres… et d'énigmes à résoudre.</p>
+      <div class="hero-meta">
+        <span class="chip">📅 XX → XX juin 2027</span>
+        <span class="chip">📍 IUT de Béthune</span>
+        <span class="chip">👥 ~100 participants</span>
+      </div>
+      <div class="btns">
+        <a href="#inscriptions" class="btn btn-yellow">Je m'inscris →</a>
+        <a href="#carte" class="btn btn-ghost">Explorer la carte</a>
+      </div>
+    </div>
+
+    <!-- Illustration : beffroi stylisé + antennes -->
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 400 380">
+        <circle cx="200" cy="190" r="170" fill="#1b2650" stroke="#2de2e6" stroke-width="3" stroke-dasharray="6 10"/>
+        <!-- ondes -->
+        <g fill="none" stroke="#ffd23f" stroke-width="5" stroke-linecap="round">
+          <path d="M150 70 q50 -40 100 0"/><path d="M165 90 q35 -26 70 0"/><path d="M180 110 q20 -14 40 0"/>
+        </g>
+        <!-- beffroi -->
+        <rect x="170" y="150" width="60" height="170" fill="#fbf7ef" stroke="#101935" stroke-width="4"/>
+        <polygon points="165,150 200,110 235,150" fill="#ff5d73" stroke="#101935" stroke-width="4"/>
+        <rect x="193" y="96" width="14" height="20" fill="#ffd23f" stroke="#101935" stroke-width="3"/>
+        <circle cx="200" cy="185" r="16" fill="#ffd23f" stroke="#101935" stroke-width="4"/>
+        <path d="M200 185 v-10 M200 185 h8" stroke="#101935" stroke-width="3"/>
+        <rect x="186" y="220" width="10" height="22" fill="#101935"/><rect x="204" y="220" width="10" height="22" fill="#101935"/>
+        <rect x="186" y="260" width="10" height="22" fill="#101935"/><rect x="204" y="260" width="10" height="22" fill="#101935"/>
+        <!-- tours latérales -->
+        <rect x="140" y="200" width="30" height="120" fill="#2de2e6" stroke="#101935" stroke-width="4"/>
+        <rect x="230" y="200" width="30" height="120" fill="#2de2e6" stroke="#101935" stroke-width="4"/>
+        <!-- switch / serveur -->
+        <rect x="70" y="270" width="80" height="50" rx="6" fill="#101935" stroke="#2de2e6" stroke-width="3"/>
+        <g fill="#3ddc84"><circle cx="85" cy="285" r="4"/><circle cx="100" cy="285" r="4"/><circle cx="115" cy="285" r="4"/><circle cx="130" cy="285" r="4"/></g>
+        <rect x="250" y="250" width="80" height="70" rx="6" fill="#ff5d73" stroke="#101935" stroke-width="4"/>
+        <line x1="260" y1="270" x2="320" y2="270" stroke="#101935" stroke-width="4"/><line x1="260" y1="290" x2="320" y2="290" stroke="#101935" stroke-width="4"/>
+        <!-- câble -->
+        <path d="M150 300 C 170 350, 240 350, 250 300" fill="none" stroke="#ffd23f" stroke-width="5"/>
+        <rect x="50" y="320" width="300" height="8" rx="4" fill="#101935"/>
+      </svg>
+    </div>
+  </div>
+  <svg class="wave" viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0 60 L0 30 Q 180 0 360 30 T 720 30 T 1080 30 T 1440 30 L1440 60 Z" fill="#fbf7ef"/></svg>
+</section>
+
+<div class="wrap countdown">
+  <div class="cd-box"><b id="cd-d">--</b><small>JOURS</small></div>
+  <div class="cd-box"><b id="cd-h">--</b><small>HEURES</small></div>
+  <div class="cd-box"><b id="cd-m">--</b><small>MINUTES</small></div>
+  <div class="cd-box"><b class="mono" style="font-size:1.4rem;padding-top:8px">TTL ok</b><small>STATUT</small></div>
+</div>
+
+<!-- ============ PROGRAMME ============ -->
+<section id="programme">
+  <div class="wrap">
+    <span class="tag">// programme</span>
+    <h2 class="section-title">Le programme, jour par jour</h2>
+    <p class="section-sub">Une page par journée sur le vrai site. Ici, un aperçu en onglets. Contenu provisoire, à remplacer par le vrai programme.</p>
+
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-day="1">Jour 1<small>Mercredi</small></button>
+      <button class="tab" data-day="2">Jour 2<small>Jeudi</small></button>
+      <button class="tab" data-day="3">Jour 3<small>Vendredi</small></button>
+    </div>
+
+    <div class="day active" id="day-1">
+      <div class="timeline">
+        <div class="slot"><span class="time">12:00</span><div><h4>Accueil &amp; badges</h4><p>Hall principal — récupération du kit participant</p></div><span class="pill bg-c">Accueil</span></div>
+        <div class="slot"><span class="time">14:00</span><div><h4>Ouverture officielle</h4><p>Amphi A — mot de la direction</p></div><span class="pill bg-y">Plénière</span></div>
+        <div class="slot"><span class="time">16:30</span><div><h4>Lancement du Cluedo géant</h4><p>Les premiers indices sont cachés dans l'IUT…</p></div><span class="pill bg-r">Jeu</span></div>
+        <div class="slot"><span class="time">19:30</span><div><h4>Soirée de bienvenue</h4><p>Centre-ville de Béthune</p></div><span class="pill bg-g">Soirée</span></div>
+      </div>
+    </div>
+    <div class="day" id="day-2">
+      <div class="timeline">
+        <div class="slot"><span class="time">09:00</span><div><h4>Assemblée générale — session 1</h4><p>Amphi A</p></div><span class="pill bg-y">Plénière</span></div>
+        <div class="slot"><span class="time">14:00</span><div><h4>Ateliers thématiques</h4><p>Salles TP R&amp;T</p></div><span class="pill bg-c">Atelier</span></div>
+        <div class="slot"><span class="time">16:30</span><div><h4>Escape Game : le Datacenter maudit</h4><p>Salle serveurs — par équipes de 5</p></div><span class="pill bg-r">Jeu</span></div>
+        <div class="slot"><span class="time">20:00</span><div><h4>Dîner de gala</h4><p>Lieu à confirmer</p></div><span class="pill bg-g">Soirée</span></div>
+      </div>
+    </div>
+    <div class="day" id="day-3">
+      <div class="timeline">
+        <div class="slot"><span class="time">09:00</span><div><h4>Assemblée générale — session 2</h4><p>Amphi A</p></div><span class="pill bg-y">Plénière</span></div>
+        <div class="slot"><span class="time">11:30</span><div><h4>Révélation du coupable du Cluedo</h4><p>Et remise des prix</p></div><span class="pill bg-r">Jeu</span></div>
+        <div class="slot"><span class="time">12:30</span><div><h4>Déjeuner de clôture</h4><p>Restaurant universitaire</p></div><span class="pill bg-g">Repas</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CARTE ============ -->
+<section id="carte">
+  <div class="wrap">
+    <span class="tag" style="background:var(--yellow);color:var(--navy)">// carte du parc</span>
+    <h2 class="section-title">Bienvenue à R&amp;T Land</h2>
+    <p class="section-sub">L'IUT vu du ciel, façon parc d'attractions. Clique sur un point pour savoir ce qui s'y passe. Le plan est schématique : à redessiner à partir du vrai plan de l'IUT.</p>
+
+    <div class="map-layout">
+      <div class="map-box">
+        <svg viewBox="0 0 600 420" role="img" aria-label="Plan schématique de l'IUT">
+          <!-- pelouse / allées -->
+          <rect width="600" height="420" fill="#bfe3b4"/>
+          <path d="M0 210 H600 M300 0 V420" stroke="#f4ecd6" stroke-width="28"/>
+          <circle cx="300" cy="210" r="42" fill="#f4ecd6"/>
+          <circle cx="300" cy="210" r="22" fill="#2de2e6" stroke="#101935" stroke-width="3"/>
+          <!-- arbres -->
+          <g fill="#3ddc84" stroke="#101935" stroke-width="2">
+            <circle cx="40" cy="40" r="14"/><circle cx="70" cy="30" r="10"/><circle cx="560" cy="380" r="14"/><circle cx="530" cy="395" r="10"/><circle cx="560" cy="40" r="12"/><circle cx="40" cy="385" r="12"/>
+          </g>
+          <!-- bâtiments -->
+          <g stroke="#101935" stroke-width="4">
+            <rect x="60" y="60" width="200" height="120" rx="10" fill="#ffd23f"/>
+            <rect x="340" y="60" width="200" height="120" rx="10" fill="#ff5d73"/>
+            <rect x="60" y="240" width="200" height="120" rx="10" fill="#fbf7ef"/>
+            <rect x="340" y="240" width="120" height="120" rx="10" fill="#2de2e6"/>
+            <rect x="470" y="240" width="80" height="120" rx="10" fill="#9aa3c7"/>
+          </g>
+          <g font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="15" fill="#101935" text-anchor="middle">
+            <text x="160" y="100">BÂTIMENT R&amp;T</text>
+            <text x="440" y="100">AMPHIS</text>
+            <text x="160" y="280">HALL &amp; ACCUEIL</text>
+            <text x="400" y="280">RESTO</text>
+            <text x="510" y="280" font-size="12">PARKING</text>
+          </g>
+
+          <!-- marqueurs -->
+          <g class="marker" data-i="0"><circle class="pulse" cx="160" cy="150" r="14" fill="#101935"/><circle cx="160" cy="150" r="14" fill="#101935" stroke="#fff" stroke-width="3"/><text x="160" y="155" fill="#ffd23f" font-weight="800" font-size="14" text-anchor="middle">1</text></g>
+          <g class="marker" data-i="1"><circle class="pulse" cx="440" cy="150" r="14" fill="#101935"/><circle cx="440" cy="150" r="14" fill="#101935" stroke="#fff" stroke-width="3"/><text x="440" y="155" fill="#ffd23f" font-weight="800" font-size="14" text-anchor="middle">2</text></g>
+          <g class="marker" data-i="2"><circle class="pulse" cx="160" cy="330" r="14" fill="#101935"/><circle cx="160" cy="330" r="14" fill="#101935" stroke="#fff" stroke-width="3"/><text x="160" y="335" fill="#ffd23f" font-weight="800" font-size="14" text-anchor="middle">3</text></g>
+          <g class="marker" data-i="3"><circle class="pulse" cx="400" cy="330" r="14" fill="#101935"/><circle cx="400" cy="330" r="14" fill="#101935" stroke="#fff" stroke-width="3"/><text x="400" y="335" fill="#ffd23f" font-weight="800" font-size="14" text-anchor="middle">4</text></g>
+          <g class="marker" data-i="4"><circle class="pulse" cx="300" cy="210" r="14" fill="#101935"/><circle cx="300" cy="210" r="14" fill="#101935" stroke="#fff" stroke-width="3"/><text x="300" y="215" fill="#ffd23f" font-weight="800" font-size="14" text-anchor="middle">5</text></g>
+        </svg>
+      </div>
+
+      <aside class="map-info" aria-live="polite">
+        <span class="tag" style="background:var(--cyan);color:var(--navy)" id="mi-tag">Zone 1</span>
+        <h3 id="mi-title">Choisis une attraction</h3>
+        <p id="mi-text">Clique sur un numéro de la carte ou dans la légende.</p>
+        <ul class="legend" id="legend"></ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ JEUX ============ -->
+<section id="jeux">
+  <div class="wrap">
+    <span class="tag">// jeux</span>
+    <h2 class="section-title">Les attractions</h2>
+    <p class="section-sub">Les jeux de l'ACD. Concepts de départ, le texte complet (histoire, énigmes, déroulé) est à écrire par le groupe.</p>
+
+    <div class="grid-3">
+      <article class="card game">
+        <span class="badge">EN ÉCRITURE</span>
+        <div class="icon bg-y">🔍</div>
+        <h3>Cluedo : qui a débranché le switch ?</h3>
+        <p>La veille de l'ACD, le switch cœur de l'IUT a été retrouvé débranché. Six suspects, six salles, six câbles. Aux participants de mener l'enquête pendant tout l'événement.</p>
+        <div class="meta"><span class="pill bg-c">Tout l'événement</span><span class="pill bg-y">Équipes de 4</span></div>
+        <blockquote>« J'étais en train de sertir un RJ45, je vous jure ! » — un suspect</blockquote>
+        <a class="play" href="#">Lire les règles →</a>
+      </article>
+
+      <article class="card game">
+        <span class="badge">EN ÉCRITURE</span>
+        <div class="icon bg-r">🔐</div>
+        <h3>Escape Game : le Datacenter maudit</h3>
+        <p>Enfermés dans la salle serveurs, 45 minutes pour retrouver le mot de passe root avant que la clim ne lâche. Énigmes en binaire, sous-réseaux et câblage.</p>
+        <div class="meta"><span class="pill bg-c">45 min</span><span class="pill bg-y">5 joueurs</span></div>
+        <blockquote>« Indice : le mot de passe n'est pas admin. Enfin… plus. »</blockquote>
+        <a class="play" href="#">Lire le scénario →</a>
+      </article>
+
+      <article class="card game">
+        <span class="badge">EN ÉCRITURE</span>
+        <div class="icon bg-g">👾</div>
+        <h3>Pac-Net</h3>
+        <p>Un Pac-Man dans les couloirs de l'IUT : mange tous les routeurs, switchs et bornes Wi-Fi en évitant les fantômes « Paquet perdu », « Boucle STP » et « DHCP en panne ».</p>
+        <div class="meta"><span class="pill bg-c">En ligne</span><span class="pill bg-y">Solo</span></div>
+        <blockquote>Tableau des scores affiché pendant l'événement.</blockquote>
+        <a class="play" href="#">Jouer (bientôt) →</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INFOS PRATIQUES ============ -->
+<section id="infos" style="background:#f1e9d8">
+  <div class="wrap">
+    <span class="tag">// infos pratiques</span>
+    <h2 class="section-title">Venir et séjourner</h2>
+    <p class="section-sub">Tout ce qu'il faut pour arriver à l'IUT sans timeout. Infos à vérifier avant publication.</p>
+
+    <div class="grid-2">
+      <div class="card info">
+        <div class="icon bg-c">🚆</div>
+        <h3>Accès</h3>
+        <ul>
+          <li><b>Train :</b> gare de Béthune, puis bus ou taxi jusqu'à l'IUT</li>
+          <li><b>Avion :</b> aéroport de Lille-Lesquin, puis train depuis Lille</li>
+          <li><b>Voiture :</b> autoroute A26, parking sur place</li>
+          <li><b>Bus :</b> arrêt le plus proche à préciser</li>
+        </ul>
+      </div>
+      <div class="card info">
+        <div class="icon bg-y">🏨</div>
+        <h3>Hôtels à proximité</h3>
+        <ul>
+          <li class="hotel"><span>Hôtel n°1</span><span class="mono">X min</span></li>
+          <li class="hotel"><span>Hôtel n°2</span><span class="mono">X min</span></li>
+          <li class="hotel"><span>Hôtel n°3</span><span class="mono">X min</span></li>
+          <li style="color:var(--muted);font-size:.85rem">Liste à compléter avec les vrais hôtels et d'éventuels tarifs négociés.</li>
+        </ul>
+      </div>
+      <div class="card info">
+        <div class="icon bg-g">🕘</div>
+        <h3>Horaires d'ouverture</h3>
+        <ul>
+          <li><b>Pendant l'ACD :</b> 8h00 – 19h00</li>
+          <li><b>Accueil :</b> hall principal</li>
+          <li style="color:var(--muted);font-size:.85rem">Horaires provisoires.</li>
+        </ul>
+      </div>
+      <div class="card info">
+        <div class="icon bg-r">📞</div>
+        <h3>Contact</h3>
+        <ul>
+          <li><b>IUT de Béthune</b></li>
+          <li>Département Réseaux &amp; Télécommunications</li>
+          <li>Adresse, téléphone et e-mail à compléter</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DÉCOUVRIR ============ -->
+<section id="decouvrir">
+  <div class="wrap">
+    <span class="tag">// découvrez-en plus</span>
+    <h2 class="section-title">Les départements de l'IUT</h2>
+    <p class="section-sub">Une carte par département de l'IUT de Béthune. Liste et descriptions à valider.</p>
+    <div class="grid-4">
+      <div class="card dept host"><div class="big">R&amp;T</div><p>Réseaux &amp; Télécommunications — vos hôtes !</p></div>
+      <div class="card dept"><div class="big">GEII</div><p>Génie électrique</p></div>
+      <div class="card dept"><div class="big">GEA</div><p>Gestion des entreprises</p></div>
+      <div class="card dept"><div class="big">…</div><p>Autres départements à ajouter</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INSCRIPTIONS ============ -->
+<section id="inscriptions" style="background:#f1e9d8">
+  <div class="wrap">
+    <span class="tag">// inscriptions</span>
+    <h2 class="section-title">Réserve ta place</h2>
+    <p class="section-sub">La pré-inscription se fait sur un site externe. Tarifs et formules provisoires.</p>
+
+    <div class="grid-3">
+      <div class="card price">
+        <h3>Journée</h3>
+        <div class="amount">XX €</div>
+        <ul><li>Accès aux sessions du jour</li><li>Déjeuner</li><li>Accès aux jeux</li></ul>
+        <a href="#" class="btn btn-yellow">Choisir</a>
+      </div>
+      <div class="card price featured">
+        <h3>Pack complet</h3>
+        <div class="amount">XX €</div>
+        <ul><li>Toutes les journées</li><li>Tous les repas</li><li>Dîner de gala</li><li>Kit participant</li></ul>
+        <a href="#" class="btn btn-yellow">Choisir</a>
+      </div>
+      <div class="card price">
+        <h3>Accompagnant·e</h3>
+        <div class="amount">XX €</div>
+        <ul><li>Soirées et dîner de gala</li><li>Visite de Béthune</li></ul>
+        <a href="#" class="btn btn-yellow">Choisir</a>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div>Choisis ta formule sur cette page</div>
+      <div>Remplis la pré-inscription sur le site externe</div>
+      <div>Règle par virement ou bon de commande</div>
+      <div>Reçois ta confirmation par e-mail</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SOUVENIRS ============ -->
+<section id="souvenirs">
+  <div class="wrap">
+    <span class="tag">// souvenirs</span>
+    <h2 class="section-title">L'album de l'ACD</h2>
+    <p class="section-sub">Scanne le QR code pour déposer tes photos. Elles seront ensuite affichées ici, classées par activité.</p>
+
+    <div class="polaroids">
+      <div class="polaroid"><div class="ph">📸</div><span>Accueil — J1</span></div>
+      <div class="polaroid"><div class="ph">🔍</div><span>Cluedo</span></div>
+      <div class="polaroid"><div class="ph">🔐</div><span>Escape game</span></div>
+      <div class="polaroid"><div class="ph">🍽️</div><span>Dîner de gala</span></div>
+      <div class="polaroid"><div class="ph">🏆</div><span>Remise des prix</span></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card" style="display:flex;gap:24px;align-items:center;flex-wrap:wrap">
+        <div class="qr" aria-label="QR code (placeholder)"></div>
+        <div>
+          <h3 style="margin-bottom:8px">Partage tes photos</h3>
+          <p style="color:var(--muted);font-size:.93rem">Le QR code mène au dossier partagé. Placeholder : le vrai QR sera généré plus tard.</p>
+        </div>
+      </div>
+      <div class="card guestbook">
+        <h3 style="margin-bottom:14px">Livre d'or</h3>
+        <div class="msg">« Meilleure ACD depuis l'invention du TCP. Le Cluedo m'a empêché de dormir. »<small>— exemple</small></div>
+        <div class="msg">« J'ai enfin compris le VLAN 42. Merci Béthune ! »<small>— exemple</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SIDEBAR PLAN ============ -->
+<a href="#" class="dl-plan" title="Télécharger le plan de l'IUT">⬇ Plan de l'IUT</a>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <h4>ACD R&amp;T 2027</h4>
+        <p style="font-size:.9rem">Assemblée des Chef·fe·s de Département Réseaux &amp; Télécommunications, accueillie par l'IUT de Béthune.</p>
+        <div class="logos"><div>Logo IUT</div><div>Logo Univ. d'Artois</div><div>Logo Ville de Béthune</div></div>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <ul><li><a href="#programme">Programme</a></li><li><a href="#carte">Carte</a></li><li><a href="#jeux">Jeux</a></li><li><a href="#infos">Infos pratiques</a></li><li><a href="#inscriptions">Inscriptions</a></li></ul>
+      </div>
+      <div>
+        <h4>Crédits</h4>
+        <ul><li>Jeux : [noms]</li><li>Dessins : [noms]</li><li>Site : [noms]</li><li>Étudiants BUT R&amp;T, IUT de Béthune</li></ul>
+      </div>
+    </div>
+    <div class="credits"><span>© 2027 IUT de Béthune</span><span class="mono">Site 100 % statique · 0 faille · 0 cookie</span></div>
+  </div>
+</footer>
+
+<script>
+/* Onglets du programme */
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.day').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('day-'+t.dataset.day).classList.add('active');
+  });
+});
+
+/* Carte interactive */
+const zones=[
+  {t:"Bâtiment R&T",tag:"Zone 1 · Ateliers",c:"#ffd23f",d:"Les salles TP accueillent les ateliers thématiques. Le premier indice du Cluedo est caché près d'une baie de brassage…"},
+  {t:"Les Amphis",tag:"Zone 2 · Plénières",c:"#ff5d73",d:"Assemblées générales et ouverture officielle. Pensez au café avant la session de 9h."},
+  {t:"Hall & Accueil",tag:"Zone 3 · Accueil",c:"#fbf7ef",d:"Badges, kits participants et tableau des scores du Pac-Net."},
+  {t:"Restaurant",tag:"Zone 4 · Pause",c:"#2de2e6",d:"Déjeuners et pauses café. Zone sans énigme… en théorie."},
+  {t:"La Fontaine du Ping",tag:"Zone 5 · Point de rendez-vous",c:"#3ddc84",d:"Centre du parc et point de ralliement des équipes pour les jeux."}
+];
+const legend=document.getElementById('legend');
+function show(i){
+  const z=zones[i];
+  document.getElementById('mi-title').textContent=z.t;
+  document.getElementById('mi-tag').textContent=z.tag;
+  document.getElementById('mi-text').textContent=z.d;
+  document.querySelectorAll('.marker').forEach(m=>m.classList.toggle('on',+m.dataset.i===i));
+}
+zones.forEach((z,i)=>{
+  const li=document.createElement('li');
+  li.innerHTML=`<span class="dot" style="background:${z.c}">${i+1}</span>${z.t}`;
+  li.onclick=()=>show(i);
+  legend.appendChild(li);
+});
+document.querySelectorAll('.marker').forEach(m=>m.addEventListener('click',()=>show(+m.dataset.i)));
+
+/* Compte à rebours (date provisoire) */
+const target=new Date('2027-06-02T09:00:00');
+function tick(){
+  const s=Math.max(0,target-new Date())/1000;
+  document.getElementById('cd-d').textContent=Math.floor(s/86400);
+  document.getElementById('cd-h').textContent=Math.floor(s%86400/3600);
+  document.getElementById('cd-m').textContent=Math.floor(s%3600/60);
+}
+tick();setInterval(tick,30000);
+</script>
+</body>
+</html>

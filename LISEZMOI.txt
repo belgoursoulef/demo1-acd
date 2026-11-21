@@ -1,0 +1,33 @@
+SITE ACD R&T 2027 — IUT DE BÉTHUNE (maquette)
+=============================================
+
+Site 100 % statique : HTML / CSS / JS côté client uniquement.
+Aucune installation nécessaire.
+
+OUVRIR LE SITE
+--------------
+Double-clique sur index.html : il s'ouvre dans le navigateur.
+Garde la structure des dossiers telle quelle, sinon le style et les scripts ne se chargent plus.
+
+CONTENU
+-------
+index.html            Page principale (toutes les sections)
+css/style.css         Styles + les 3 thèmes (J1 Connexion, J2 L'Enquête, J3 Game Over)
+js/main.js            Thèmes, programme, carte interactive, mini-jeu Pac-Net,
+                      filtre restaurants, galerie souvenirs, énigmes
+img/                  Logos ACD (SVG/PNG) + logos officiels IUT, R&T, Université d'Artois
+archives/maquette-v1  Première maquette (pour comparaison)
+
+À COMPLÉTER
+-----------
+- Photos : IUT, beffroi et salle TP ajoutées (img/photos) — en ajouter pour les départements
+- Vrai plan de l'IUT (carte + terrain du mini-jeu)
+- Hôtels, restaurants (avec pictos végé / halal / allergènes), horaires, contacts
+- Lien du Google Form d'inscription et du Drive photos (+ QR code)
+- Scénario complet du Grand Jeu
+- Noms des étudiants dans les crédits (pied de page)
+
+ÉNIGMES (réponses — ne pas diffuser)
+------------------------------------
+1. PING   2. RT-2027   3. VLAN   4. SWITCH (50 pts au Pac-Net)   5. /25
+Code final : ACD-PRV-S25

@@ -1,0 +1,759 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ACD R&T 2027 — IUT de Béthune</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Special+Elite&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<link rel="icon" href="img/logo-acd-badge.svg" type="image/svg+xml">
+</head>
+<body data-theme="j1">
+
+<!-- ============ BARRE DE DÉMO DES THÈMES (maquette uniquement) ============ -->
+<div class="theme-bar">
+  <div class="wrap">
+    <b>Maquette · design du jour :</b>
+    <button class="tbtn on" data-t="j1">J1 · Connexion</button>
+    <button class="tbtn" data-t="j2">J2 · L'Enquête</button>
+    <button class="tbtn" data-t="j3">J3 · Game Over</button>
+  </div>
+</div>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="wrap nav">
+    <a href="#" class="logo"><img src="img/logo-acd-badge.svg" alt="Logo ACD R&amp;T" class="logo-img">ACD 2027 · Béthune</a>
+    <button class="burger" aria-label="Menu" onclick="document.querySelector('.menu').classList.toggle('open')">☰</button>
+    <ul class="menu">
+      <li><a href="#programme">Programme</a></li>
+      <li><a href="#jeux">Jeux</a></li>
+      <li><a href="#enigmes">🧩 Énigmes</a></li>
+      <li><a href="#infos">Infos &amp; accès</a></li>
+      <li><a href="#decouvrir">Découvrez-en plus</a></li>
+      <li><a href="#souvenirs">Souvenirs</a></li>
+      <li><a href="#inscriptions" class="cta">S'inscrire</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="kicker" id="h-kicker">$ ping acd-rt.bethune.fr — 64 bytes, ttl=62, time=2-4 juin 2027</p>
+      <h1 id="h-title">Tous les paquets<br>mènent à <em>Béthune</em>.</h1>
+      <p class="lead" id="h-lead">L'Assemblée des Chef·fe·s de Département Réseaux &amp; Télécommunications débarque à l'IUT de Béthune. Trois jours, trois ambiances, et une enquête à résoudre.</p>
+      <div class="chips">
+        <span class="chip">📅 2 → 4 juin 2027</span>
+        <span class="chip">📍 IUT de Béthune</span>
+        <span class="chip">👥 ~100 participants de toute la France &amp; outre-mer</span>
+      </div>
+      <div class="btns">
+        <a href="#inscriptions" class="btn">Je m'inscris →</a>
+        <a href="#carte" class="btn ghost">Voir la carte</a>
+      </div>
+    </div>
+    <!-- Emplacements pour les VRAIES photos -->
+    <div class="hero-visual">
+      <figure class="photo big"><img src="img/photos/iut-bethune-facade.jpg" alt="Façade de l'IUT de Béthune"><figcaption>L'IUT de Béthune</figcaption></figure>
+      <figure class="photo"><img src="img/photos/beffroi-bethune.jpg" alt="Le beffroi de Béthune sur la Grand'Place"><figcaption>Le beffroi, Grand'Place</figcaption></figure>
+      <figure class="photo"><img src="img/photos/salle-tp-rt.jpg" alt="Salle de TP du département R&amp;T"><figcaption>Salle TP R&amp;T</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BANDEAU PARTENAIRES ============ -->
+<div class="partners">
+  <div class="wrap">
+    <span>Organisé par</span>
+    <img src="img/logo-iut-bethune.png" alt="IUT de Béthune">
+    <img src="img/logo-rt.png" alt="Département Réseaux informatiques &amp; Télécommunications">
+    <img src="img/logo-universite-artois.png" alt="Université d'Artois">
+  </div>
+</div>
+
+<!-- ============ PROGRAMME ============ -->
+<section id="programme">
+  <div class="wrap">
+    <span class="tag">// A. programme</span>
+    <h2 class="h2">3 jours, 3 ambiances</h2>
+    <p class="sub">Sur le vrai site, chaque journée aura sa propre page avec son propre design. Clique sur un jour pour changer le thème de toute la maquette.<span class="gold" title="Une lettre dorée…">L<sup>2</sup></span></p>
+
+    <div class="days">
+      <div class="card day-card on" data-t="j1">
+        <div class="num">01</div>
+        <h3>Connexion</h3>
+        <p class="theme-name">Mercredi 2 juin · accueil &amp; ouverture</p>
+        <p>On branche tout le monde : arrivée, badges, ouverture officielle, lancement du grand jeu.</p>
+        <div class="swatches"><i style="background:#101935"></i><i style="background:#ffd23f"></i><i style="background:#2de2e6"></i><i style="background:#ff5d73"></i></div>
+      </div>
+      <div class="card day-card" data-t="j2">
+        <div class="num">02</div>
+        <h3>L'Enquête</h3>
+        <p class="theme-name">Jeudi 3 juin · assemblée &amp; ateliers</p>
+        <p>Journée de travail le jour, polar le soir : les indices du Cluedo se resserrent.</p>
+        <div class="swatches"><i style="background:#1f1611"></i><i style="background:#b3261e"></i><i style="background:#c9a35b"></i><i style="background:#efe6d2"></i></div>
+      </div>
+      <div class="card day-card" data-t="j3">
+        <div class="num">03</div>
+        <h3>Game Over</h3>
+        <p class="theme-name">Vendredi 4 juin · clôture</p>
+        <p>Dernière session, révélation du coupable, remise des prix et high-scores du mini-jeu.</p>
+        <div class="swatches"><i style="background:#0b0b14"></i><i style="background:#ff3df2"></i><i style="background:#00f0ff"></i><i style="background:#ffe600"></i></div>
+      </div>
+    </div>
+
+    <div class="day-detail">
+      <h3 class="block-title" id="day-title">Jour 1 · Connexion — déroulé</h3>
+      <div class="timeline" id="timeline"></div>
+      <p class="note">Horaires et contenus provisoires, à remplacer par le vrai programme.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ JEUX ============ -->
+<section id="jeux" class="alt">
+  <div class="wrap">
+    <span class="tag">// 2. gaming</span>
+    <h2 class="h2">Le Grand Jeu</h2>
+    <p class="sub">L'attraction principale de l'ACD. Scénario et textes en cours d'écriture par le groupe.<span class="gold" title="Une lettre dorée…">N<sup>4</sup></span></p>
+
+    <div class="card game-main">
+      <div class="left">
+        <span class="pill a3">Cluedo géant · 3 jours</span>
+        <h3 style="margin-top:12px">Qui a débranché le switch cœur ?</h3>
+        <p>La veille de l'ACD, tout le réseau de l'IUT est tombé. Le switch cœur a été retrouvé débranché dans la baie. Six suspects, six salles, six « armes ». Les équipes récoltent des indices tout au long de l'événement ; le coupable est révélé le vendredi.</p>
+        <p class="clue">« J'étais en train de sertir un RJ45, je vous jure ! » — un suspect</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span class="pill a1">Équipes de 4–5</span><span class="pill a2">Indices dans tout l'IUT</span><span class="pill a4">Prix à la clé</span>
+        </div>
+      </div>
+      <div class="right">
+        <h4>Les suspects <span class="note" style="color:var(--hero-muted)">(personnages à écrire)</span></h4>
+        <div class="suspects">
+          <div class="suspect"><b>🧑‍💻</b>L'Admin Réseau</div>
+          <div class="suspect"><b>🧑‍🏫</b>Le Prof de Télécoms</div>
+          <div class="suspect"><b>👷</b>Le Technicien Fibre</div>
+          <div class="suspect"><b>🧑‍🎓</b>L'Étudiant en 1ʳᵉ année</div>
+          <div class="suspect"><b>☕</b>La Machine à café</div>
+          <div class="suspect"><b>🤖</b>L'IA du département</div>
+        </div>
+        <h4 style="margin-top:8px">Les « armes »</h4>
+        <p style="font-size:.88rem;color:var(--hero-muted)">Câble croisé · Pince à sertir · Boucle STP · Mauvais masque /24 · Mise à jour Windows · Tasse de café renversée</p>
+      </div>
+    </div>
+
+    <h3 class="block-title">Le mini-jeu : Pac-Net</h3>
+    <div class="mini">
+      <canvas id="snake" width="504" height="336" aria-label="Mini-jeu Snake sur le plan de l'IUT"></canvas>
+      <div>
+        <p>Un Snake dans les couloirs de l'IUT : mange les équipements réseau (📡 🖥️ 🔌 📶) sans foncer dans les murs des bâtiments. Chaque équipement vaut 10 points.</p>
+        <p class="score">Score : <b id="score">0</b> · Record : <b id="best">0</b></p>
+        <p id="pacnet-code" hidden>🔓 50 points ! Mot de passe débloqué : <b>SWITCH</b></p>
+        <button class="btn" id="start">▶ Jouer</button>
+        <div class="pad">
+          <span class="sp"></span><button data-d="up">↑</button><span class="sp"></span>
+          <button data-d="left">←</button><button data-d="down">↓</button><button data-d="right">→</button>
+        </div>
+        <p class="note" style="margin-top:10px">Flèches du clavier ou boutons. Le record reste dans ton navigateur uniquement (site statique).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ÉNIGMES : CHASSE AUX INDICES ============ -->
+<section id="enigmes">
+  <div class="wrap">
+    <span class="tag">// passe-temps</span>
+    <h2 class="h2">🧩 La chasse aux indices</h2>
+    <p class="sub">Tu attends ton groupe ? Les réponses sont cachées un peu partout sur ce site : fouille les sections, change le thème du jour, joue… Résous les 5 énigmes pour débloquer ton certificat.</p>
+
+    <div class="eni-top">
+      <b id="eni-count">0 / 5 résolues</b>
+      <div class="prog"><i id="eni-bar"></i></div>
+      <button class="moment" id="eni-reset" title="Recommencer">↺ Recommencer</button>
+    </div>
+
+    <div class="eni-grid">
+      <article class="card eni" data-id="e1" data-a="cGluZw==">
+        <div class="head"><span class="emo">🎡</span><span class="stars">★☆☆</span></div>
+        <h3>1 · Le guide du parc</h3>
+        <p class="q">Sur la carte du parc, un lieu porte le nom d'une commande qu'on tape pour savoir si une machine répond. Quelle est cette commande ?</p>
+        <form><input placeholder="Ta réponse…" aria-label="Réponse énigme 1"><button>Valider</button></form>
+        <div class="fb" aria-live="polite"></div>
+        <details><summary>💡 Indice</summary>Section « Infos &amp; accès » : clique sur les numéros de la carte.</details>
+        <div class="solved">✔ Résolue — réponse : PING</div>
+      </article>
+
+      <article class="card eni" data-id="e2" data-a="cnQyMDI3">
+        <div class="head"><span class="emo">🕵️</span><span class="stars">★★☆</span></div>
+        <h3>2 · Le dossier confidentiel</h3>
+        <p class="q">Ce site change de visage chaque jour. Le jour de l'enquête, un dossier classé confidentiel apparaît tout en haut de la page. Quel est son numéro ?</p>
+        <form><input placeholder="Ta réponse…" aria-label="Réponse énigme 2"><button>Valider</button></form>
+        <div class="fb" aria-live="polite"></div>
+        <details><summary>💡 Indice</summary>Passe le site en thème « J2 · L'Enquête » grâce à la barre jaune.</details>
+        <div class="solved">✔ Résolue — réponse : RT-2027</div>
+      </article>
+
+      <article class="card eni" data-id="e3" data-a="dmxhbg==">
+        <div class="head"><span class="emo">✨</span><span class="stars">★★☆</span></div>
+        <h3>3 · Les lettres dorées</h3>
+        <p class="q">Quatre lettres dorées numérotées sont cachées dans les sections du site. Remets-les dans l'ordre : elles forment un mot bien connu des R&amp;T.</p>
+        <form><input placeholder="Ta réponse…" aria-label="Réponse énigme 3"><button>Valider</button></form>
+        <div class="fb" aria-live="polite"></div>
+        <details><summary>💡 Indice</summary>Regarde juste sous les titres des sections Programme, Jeux, Infos et Découvrez-en plus.</details>
+        <div class="solved">✔ Résolue — réponse : VLAN</div>
+      </article>
+
+      <article class="card eni" data-id="e4" data-a="c3dpdGNo">
+        <div class="head"><span class="emo">👾</span><span class="stars">★★★</span></div>
+        <h3>4 · High score</h3>
+        <p class="q">Atteins 50 points au mini-jeu Pac-Net : le jeu te révélera un mot de passe. Tape-le ici.</p>
+        <form><input placeholder="Ta réponse…" aria-label="Réponse énigme 4"><button>Valider</button></form>
+        <div class="fb" aria-live="polite"></div>
+        <details><summary>💡 Indice</summary>5 équipements mangés = 50 points. Évite les bâtiments !</details>
+        <div class="solved">✔ Résolue — réponse : SWITCH</div>
+      </article>
+
+      <article class="card eni" data-id="e5" data-a="MjU=">
+        <div class="head"><span class="emo">🧮</span><span class="stars">★★★</span></div>
+        <h3>5 · Le sous-réseau des chefs</h3>
+        <p class="q">Tout en haut du site, on annonce le nombre de participants. Quel est le plus petit sous-réseau IPv4 (en notation CIDR, ex. /24) capable de tous les accueillir ?</p>
+        <form><input placeholder="Ta réponse…" aria-label="Réponse énigme 5"><button>Valider</button></form>
+        <div class="fb" aria-live="polite"></div>
+        <details><summary>💡 Indice</summary>N'oublie pas l'adresse réseau et le broadcast.</details>
+        <div class="solved">✔ Résolue — réponse : /25</div>
+      </article>
+
+      <article class="card eni final" id="eni-final">
+        <div class="locked-zone">
+          <div class="locked">🔒</div>
+          <h3>Récompense verrouillée</h3>
+          <p>Résous les 5 énigmes pour la débloquer.</p>
+        </div>
+        <div class="cert">
+          <div style="font-size:3rem">🏆</div>
+          <h3>Admin Réseau Honoraire</h3>
+          <p>Bravo, tu as percé tous les secrets du site de l'ACD !</p>
+          <div class="code">ACD-PRV-S25</div>
+          <p class="note" style="color:var(--hero-muted)">Idée : montre cet écran à l'accueil (zone 3 de la carte) pour récupérer un goodie.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INFOS PRATIQUES ============ -->
+<section id="infos">
+  <div class="wrap">
+    <span class="tag">// B. infos pratiques &amp; accès</span>
+    <h2 class="h2">Venir, dormir, manger</h2>
+    <p class="sub">Tout pour arriver à l'IUT sans timeout. Toutes les infos sont à vérifier avant publication.<span class="gold" title="Une lettre dorée…">A<sup>3</sup></span></p>
+
+    <!-- Transports -->
+    <div class="transport">
+      <div class="card">
+        <span class="ico">🚆</span><h4>Train</h4>
+        <p><b>Lille Flandres ⇄ Béthune</b> : TER direct dans les deux sens, environ 25 à 40 min, une trentaine de trains par jour.</p>
+        <p>Depuis la gare de Béthune : bus Tadao <b>gratuit</b> jusqu'à l'arrêt <b>Université</b>, ou 20-25 min à pied.</p>
+      </div>
+      <div class="card">
+        <span class="ico">✈️</span><h4>Avion</h4>
+        <p><b>Aéroport de Lille-Lesquin</b> : navette jusqu'au centre de Lille (~20 min), puis TER direct Lille Flandres → Béthune.</p>
+        <p>Compter environ 1 h 15 à 1 h 30 de l'aéroport à l'IUT.</p>
+      </div>
+      <div class="card">
+        <span class="ico">🚌</span><h4>Bus Tadao <span class="pill a4">Gratuit</span></h4>
+        <p>Arrêt <b>Université</b>, juste en face de l'IUT.</p>
+        <p>Le réseau de bus Tadao est <b>entièrement gratuit</b> : pas de ticket à acheter, il suffit de monter.</p><p>Plusieurs lignes desservent l'IUT, dont depuis la gare de Béthune. Horaires sur <b>tadao.fr</b>.</p>
+      </div>
+      <div class="card">
+        <span class="ico">🚗</span><h4>Voiture</h4>
+        <p>Accès par l'autoroute A26.</p>
+        <p>Deux parkings : <b>le parking de l'IUT</b> (sécurisé) et <b>celui de la faculté voisine</b> (Faculté des Sciences Appliquées).</p>
+      </div>
+    </div>
+    <div class="card route-tip">
+      <b>🧭 Itinéraire recommandé</b>
+      <p>Train jusqu'à <b>Lille Flandres</b> (TGV depuis Paris, Lyon…) → <b>TER direct jusqu'à Béthune</b> → <b>bus Tadao (gratuit)</b> jusqu'à l'arrêt <b>Université</b>, en face de l'IUT.</p>
+    </div>
+
+
+
+    <!-- Carte interactive Leaflet -->
+    <div id="carte" class="carte-leaflet-wrap">
+      <!-- Onglets vue -->
+      <nav class="carte-tabs" role="tablist" aria-label="Choix du plan">
+        <button class="carte-tab on" role="tab" data-cview="iut" id="ctab-iut">Plan de l'IUT de Béthune</button>
+        <button class="carte-tab" role="tab" data-cview="pole" id="ctab-pole">Plan du Pôle de Béthune</button>
+      </nav>
+      <!-- Bouton raccourci Bâtiment J -->
+      <div class="carte-shortcuts">
+        <button class="carte-shortcut" data-cview="iut" data-cfeat="J">★ Bât. J (R&amp;T)</button>
+        <a class="carte-shortcut crous-sc" href="https://www.crous-lille.fr/restaurant/r-u-schweitzer-bethune/" target="_blank" rel="noopener noreferrer">🍽 Menu CROUS</a>
+      </div>
+      <!-- Fond cartographique Google Maps (visible derrière le plan du Pôle) -->
+      <div id="carte-bg" aria-hidden="true"></div>
+      <!-- Carte Leaflet -->
+      <div id="carte-map" role="application" aria-label="Carte interactive du campus de Béthune"></div>
+    </div>
+
+    <style>
+    /* ---- Carte Leaflet — styles scoped sous #carte ---- */
+    #carte.carte-leaflet-wrap{position:relative;border-radius:var(--radius);overflow:hidden;border:4px solid var(--a1);box-shadow:var(--shadow);display:flex;flex-direction:column}
+    #carte-bg{position:absolute;inset:0;background-image:url("img/fond-google-maps.jpg");background-size:cover;background-position:center;filter:blur(2px);opacity:.85;z-index:0;pointer-events:none;display:none}
+    #carte-map{position:relative;z-index:1;height:520px;background:#f3f3f3}
+    @media(max-width:960px){#carte-map{height:360px}}
+    .carte-tabs{display:flex;gap:4px;padding:8px 10px;background:var(--hero-bg);z-index:2;position:relative}
+    .carte-tab{border:0;background:rgba(255,255,255,.12);color:var(--hero-ink);padding:7px 14px;border-radius:99px;font:600 .84rem Inter,sans-serif;cursor:pointer;white-space:nowrap;transition:background .2s}
+    .carte-tab.on,.carte-tab[aria-selected=true]{background:var(--a1);color:#111}
+    .carte-shortcuts{display:flex;gap:8px;padding:0 10px 8px;background:var(--hero-bg);z-index:2;position:relative;flex-wrap:wrap}
+    .carte-shortcut{border:2px solid var(--hero-ink);background:transparent;color:var(--hero-ink);padding:5px 13px;border-radius:99px;font:700 .8rem Inter,sans-serif;cursor:pointer;text-decoration:none;display:inline-block;transition:background .2s}
+    .carte-shortcut:hover{background:var(--a1);color:#111;border-color:var(--a1)}
+    .carte-shortcut.crous-sc{border-color:var(--a4);color:var(--a4)}
+    .carte-shortcut.crous-sc:hover{background:var(--a4);color:#111}
+    /* Popups Leaflet */
+    #carte .pp h3{margin:0 0 6px;font-size:15px;font-family:Inter,sans-serif}
+    #carte .pp p{margin:5px 0;font-size:.88rem}
+    #carte .bdg{display:inline-block;margin-right:6px;padding:2px 8px;border-radius:99px;background:#7b2fc9;color:#fff;font-size:11px;vertical-align:2px}
+    #carte .bdg.crous{background:#00a650}
+    #carte .chip{display:inline-block;margin:0 4px 4px 0;padding:2px 8px;border-radius:99px;background:#e6f1f5;font-size:12px;font-weight:600}
+    #carte .btn-pop{display:inline-block;margin:4px 6px 2px 0;padding:7px 11px;border:0;border-radius:8px;background:#1b8aa6;color:#fff;font:700 12px Inter,sans-serif;text-decoration:none;cursor:pointer}
+    #carte .btn-pop.rt{background:#7b2fc9}
+    #carte .btn-pop.crous{background:#00a650;font-size:13px}
+    /* Marqueurs */
+    #carte .pt{position:absolute;transform:translate(-50%,-50%);font:700 11px/1 system-ui;color:#fff;padding:4px 6px;border-radius:5px;border:2px solid #fff;box-shadow:0 1px 4px #0006;white-space:nowrap}
+    #carte .pt.dae{background:#d62828}
+    #carte .pt.rass{background:#2a9d4a;min-width:22px;text-align:center}
+    #carte .pt.park{background:#1d6fb8}
+    #carte .pt.acces{background:#40505a;font-size:12px}
+    #carte .lbl-in{position:absolute;transform:translate(-50%,-50%);font:700 12px system-ui;color:#102a36;background:#fffc;padding:1px 6px;border-radius:4px;white-space:nowrap}
+    #carte .lbl{display:none}
+    #carte-map.no-img .lbl{display:block}
+    #carte .pin-in{position:absolute;left:0;bottom:12px;transform:translateX(-50%);white-space:nowrap}
+    #carte .pin-in b{display:block;color:#fff;padding:4px 11px;border-radius:99px;font:700 12px/1.3 system-ui;box-shadow:0 2px 8px #0005}
+    #carte .pin i{position:absolute;left:-6px;top:-6px;width:12px;height:12px;border-radius:50%}
+    #carte .pin i::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid;animation:cpulse 1.8s ease-out infinite}
+    #carte .pin.rt b,#carte .pin.rt i{background:#7b2fc9}
+    #carte .pin.rt i::after{border-color:#7b2fc9}
+    #carte .pin.crous b,#carte .pin.crous i{background:#00a650}
+    #carte .pin.crous i::after{border-color:#00a650}
+    @keyframes cpulse{0%{transform:scale(.4);opacity:.9}100%{transform:scale(2.6);opacity:0}}
+    #carte .star-shape{filter:drop-shadow(0 0 7px #7b2fc9) drop-shadow(0 0 2px #fff);animation:cglow 2.4s ease-in-out infinite}
+    @keyframes cglow{50%{filter:drop-shadow(0 0 13px #7b2fc9) drop-shadow(0 0 3px #fff)}}
+    #carte .crous-shape{filter:drop-shadow(0 0 6px #00a650)}
+    @media(prefers-reduced-motion:reduce){#carte .pin i::after,#carte .star-shape{animation:none!important}}
+    /* Override Leaflet control positioning pour ne pas déborder */
+    #carte-map .leaflet-control-zoom{margin:0 0 8px 0}
+    </style>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+    (function(){
+    "use strict";
+
+    var CROUS_MENU_URL="https://www.crous-lille.fr/restaurant/r-u-schweitzer-bethune/";
+
+    /*
+     * Referentiels GPS: on projette les coordonnees pixel des plans schematiques
+     * sur la vraie carte OSM. Calibre sur le campus IUT de Bethune (50 31 N, 2 38 E).
+     * Ajuster nw/se si les polygones semblent decales par rapport aux batiments reels.
+     */
+    var REF={
+      iut: {nw:[50.5265,2.6412],se:[50.5218,2.6475],size:[1280,930],
+            center:[50.5243,2.6443],zoom:18,title:"Plan de l'IUT de Bethune"},
+      pole:{nw:[50.5285,2.6388],se:[50.5198,2.6548],size:[1308,924],
+            center:[50.5248,2.6468],zoom:16,title:"Plan du Pole de Bethune"}
+    };
+
+    /* Convertit coordonnees pixel [x,y] -> GPS [lat,lng] */
+    function px2ll(r,p){
+      return[
+        r.nw[0]-(p[1]/r.size[1])*(r.nw[0]-r.se[0]),
+        r.nw[1]+(p[0]/r.size[0])*(r.se[1]-r.nw[1])
+      ];
+    }
+
+    var VIEWS={
+      iut:{
+        ref:REF.iut,
+        filters:[
+          {cat:"bat",  label:"Batiments A a K"},
+          {cat:"acces",label:"Acces pietons et vehicules"},
+          {cat:"dae",  label:"DAE (defibrillateurs)"},
+          {cat:"rass", label:"Points de rassemblement"}
+        ],
+        features:[
+          {id:"J",cat:"bat",name:"Batiment J",short:"J",color:"#5b2a86",hl:"rt",
+            title:"Batiment J \u2014 Departement R&T",badge:"\u2605 Departement R&T",
+            pin:[468,158,"\u2605 Departement R&T"],depts:["R&T"],
+            desc:"Batiment principal du departement <strong>R&T (Reseaux &amp; Telecommunications)</strong>. Le departement occupe aussi des salles au <strong>Batiment H</strong>.",
+            actions:[{label:"Voir aussi le Bat. H",view:"iut",feat:"H",cls:"rt"}],
+            shapes:[[[437,140],[512,122],[512,208],[497,211]]]},
+          {id:"A",cat:"bat",name:"Batiment A",short:"A",color:"#e6d23c",depts:["Administration","Accueil"],
+            desc:"Administration et accueil de l'IUT. Defibrillateur (DAE) a proximite.",
+            shapes:[[[338,400],[362,400],[374,490],[425,490],[425,522],[374,522],[374,620],[318,620],[318,500]]]},
+          {id:"B",cat:"bat",name:"Batiment B",short:"B",color:"#0f6b78",depts:["Chimie","QLIO"],
+            desc:"Departements Chimie et QLIO (Qualite, Logistique Industrielle et Organisation).",
+            shapes:[[[425,484],[672,484],[672,530],[425,530]]]},
+          {id:"C",cat:"bat",name:"Batiment C",short:"C",color:"#c9cd22",depts:["Chimie"],
+            desc:"Departement Chimie. Defibrillateur (DAE) a la jonction des batiments B et C.",
+            shapes:[[[648,530],[668,530],[668,566],[712,566],[724,735],[644,740],[632,566],[648,566]]]},
+          {id:"D",cat:"bat",name:"Batiment D",short:"D",color:"#3fa63f",depts:["Chimie"],
+            desc:"Departement Chimie.",shapes:[[[718,497],[795,490],[800,568],[728,568]]]},
+          {id:"E",cat:"bat",name:"Batiment E",short:"E",color:"#6b7a8a",depts:["GCCD"],
+            desc:"Departement GCCD (Genie Civil - Construction Durable). Defibrillateur (DAE) dans le batiment.",
+            shapes:[[[558,284],[628,284],[628,438],[558,438]]]},
+          {id:"F",cat:"bat",name:"Batiment F",short:"F",color:"#9a9a9a",depts:["GCCD"],
+            desc:"Departement GCCD (Genie Civil - Construction Durable).",
+            shapes:[[[648,325],[830,325],[843,445],[660,445],[660,422],[628,422],[628,355],[648,355]]]},
+          {id:"G",cat:"bat",name:"Batiment G",short:"G",color:"#6fb6c9",depts:["Amphitheatres"],
+            desc:"Amphitheatres.",shapes:[[[330,372],[388,372],[388,350],[485,350],[485,402],[330,402]]]},
+          {id:"H",cat:"bat",name:"Batiment H",short:"H",color:"#8a3a63",depts:["R&T","GEII","GMP"],
+            desc:"Departements R&T, GEII (Genie Electrique et Informatique Industrielle) et GMP (Genie Mecanique et Productique). Defibrillateur (DAE) dans le batiment.",
+            actions:[{label:"Aller au Bat. J (R&T)",view:"iut",feat:"J",cls:"rt"}],
+            shapes:[[[272,262],[558,252],[560,300],[272,318]]]},
+          {id:"I",cat:"bat",name:"Batiment I",short:"I",color:"#a3182e",depts:["GMP","QLIO"],
+            desc:"Departements GMP et QLIO.",
+            shapes:[[[222,151],[413,151],[413,228],[372,228],[372,255],[347,255],[347,228],[222,228]]]},
+          {id:"K",cat:"bat",name:"Batiment K",short:"K",color:"#1f2a66",depts:["GEII"],
+            desc:"Departement GEII (Genie Electrique et Informatique Industrielle).",
+            shapes:[[[527,105],[663,105],[663,265],[562,265],[562,285],[527,285]]]},
+          {id:"dae-a",cat:"dae",type:"dae",name:"DAE - Batiment A",at:[381,512],desc:"Defibrillateur pres de l'accueil."},
+          {id:"dae-bc",cat:"dae",type:"dae",name:"DAE - Jonction B / C",at:[656,544],desc:"Defibrillateur entre les batiments B et C."},
+          {id:"dae-e",cat:"dae",type:"dae",name:"DAE - Batiment E",at:[589,394],desc:"Defibrillateur dans le batiment E."},
+          {id:"dae-h",cat:"dae",type:"dae",name:"DAE - Batiment H",at:[432,284],desc:"Defibrillateur dans le batiment H."},
+          {id:"pr1",cat:"rass",type:"rass",text:"1",name:"Point de rassemblement 1",at:[423,643],desc:"Pelouse devant l'accueil, cote rue de l'Universite."},
+          {id:"pr2",cat:"rass",type:"rass",text:"2",name:"Point de rassemblement 2",at:[180,248],desc:"Cote ouest du site."},
+          {id:"pr3",cat:"rass",type:"rass",text:"3",name:"Point de rassemblement 3",at:[456,198],desc:"Pres du Batiment J."},
+          {id:"pr4",cat:"rass",type:"rass",text:"4",name:"Point de rassemblement 4",at:[708,261],desc:"Cote est du site, derriere les batiments E et F."},
+          {id:"acc-p",cat:"acces",type:"acces",text:"\uD83D\uDEB6 Acces pietons",name:"Acces pietons",at:[382,822],
+            desc:"Entree pietonne depuis la rue de l'Universite.",line:[[382,560],[382,815]]},
+          {id:"acc-v",cat:"acces",type:"acces",text:"\uD83D\uDE97 Acces vehicules",name:"Acces vehicules",at:[668,812],
+            desc:"Entree vehicules, rue de l'Universite. Sens de circulation a respecter."}
+        ]
+      },
+      pole:{
+        ref:REF.pole,
+        filters:[
+          {cat:"bat",  label:"Etablissements"},
+          {cat:"park", label:"Parkings"}
+        ],
+        features:[
+          {id:"iut",cat:"bat",name:"IUT de Bethune",short:"IUT de Bethune",color:"#ff8a35",
+            depts:["Chimie","GCCD","GEII","GMP","QLIO","R&T"],
+            desc:"Institut Universitaire de Technologie - Universite d'Artois. Le departement R&T se trouve principalement au Batiment J.",
+            actions:[{label:"Voir le plan detaille A-K",view:"iut"},{label:"\u2605 Bat. J (R&T)",view:"iut",feat:"J",cls:"rt"}],
+            shapes:[
+              [[316,160],[482,160],[482,252],[316,252]],[[482,195],[622,195],[622,240],[482,240]],
+              [[566,28],[644,28],[644,200],[566,200]],[[708,165],[750,165],[750,420],[708,420]],
+              [[720,85],[768,85],[768,170],[720,170]],[[766,152],[878,152],[878,198],[766,198]],
+              [[484,240],[526,240],[526,478],[484,478]],[[358,360],[440,360],[440,532],[358,532]],
+              [[338,270],[414,270],[414,305],[350,330]],[[580,388],[792,388],[792,428],[580,428]],
+              [[622,240],[700,240],[700,420],[622,420]]
+            ]},
+          {id:"crous",cat:"bat",name:"CROUS - R.U. Schweitzer et Residence",short:"CROUS",color:"#00a650",hl:"crous",
+            badge:"Restauration",pin:[960,515,"CROUS \u00B7 Menu du jour"],
+            title:"CROUS - R.U. Schweitzer et Residence",
+            desc:"<strong>1326 rue de l'Universite, 62400 Bethune</strong><br>Tel. : <a href=\"tel:+33374091289\">03 74 09 12 89</a>"+
+                 "<br><strong>R.U. :</strong> 11h15 - 13h45 (paiement Izly)<br><strong>Cafeteria :</strong> 11h15 - 15h00 (paiement CB)<br>Acces PMR",
+            html:"<p><a class=\"btn-pop crous\" href=\""+CROUS_MENU_URL+"\" target=\"_blank\" rel=\"noopener noreferrer\">Voir le menu du jour (CROUS)</a></p>",
+            shapes:[[[886,428],[926,428],[926,697],[886,697]],[[926,495],[978,495],[978,590],[926,590]],[[843,545],[926,545],[926,580],[843,580]]]},
+          {id:"fsa",cat:"bat",name:"FSA",short:"FSA",color:"#1380b5",desc:"Faculte des Sciences Appliquees.",
+            shapes:[[[332,672],[500,672],[500,718],[332,735]],[[520,640],[580,640],[580,732],[520,732]],
+                    [[598,517],[636,517],[636,665],[598,665]],[[402,610],[430,590],[500,630],[530,680],[480,690],[440,625]]]},
+          {id:"bu",cat:"bat",name:"BU",short:"BU",color:"#b02e20",desc:"Bibliotheque Universitaire.",
+            shapes:[[[1180,260],[1262,262],[1255,350],[1190,350],[1180,305]]]},
+          {id:"ei",cat:"bat",name:"Ecole d'Ingenieurs de l'Artois",short:"Ecole d'Ingenieurs",color:"#e0185a",
+            desc:"Ecole d'Ingenieurs de l'Artois.",
+            shapes:[[[1062,190],[1100,160],[1140,125],[1165,122],[1168,190],[1196,185],[1196,212],[1140,215],[1135,290],[1120,290],[1075,225]]]},
+          {id:"sports",cat:"bat",name:"Salle des Sports",short:"Salle des Sports",color:"#3d7a52",desc:"Salle des Sports du campus.",
+            shapes:[[[12,862],[95,786],[125,795],[160,830],[155,862],[100,895],[75,895]]]},
+          {id:"p1",cat:"park",type:"park",text:"P",name:"Parking securise",at:[1127,160],desc:"Parking securise voitures et motos."},
+          {id:"p2",cat:"park",type:"park",text:"P",name:"Parking securise",at:[1112,288],desc:"Parking securise voitures et motos."},
+          {id:"p3",cat:"park",type:"park",text:"P",name:"Parking securise",at:[628,668],desc:"Parking securise voitures et motos."},
+          {id:"p4",cat:"park",type:"park",text:"P",name:"Parking",at:[742,630],desc:"Grand parking central."},
+          {id:"p5",cat:"park",type:"park",text:"P",name:"Parking IUT",at:[455,328],desc:"Parking de l'IUT."},
+          {id:"p6",cat:"park",type:"park",text:"P",name:"Parking",at:[716,463],desc:"Parking au sud de l'IUT."},
+          {id:"p7",cat:"park",type:"park",text:"P",name:"Parking",at:[773,312],desc:"Parking a l'est de l'IUT."},
+          {id:"p8",cat:"park",type:"park",text:"P",name:"Parking",at:[381,135],desc:"Parking au nord de l'IUT."},
+          {id:"p9",cat:"park",type:"park",text:"P",name:"Parking Ingenieurs",at:[1092,131],desc:"Parking de l'Ecole d'Ingenieurs."},
+          {id:"p10",cat:"park",type:"park",text:"P",name:"Parking BU",at:[1166,442],desc:"Parking de la BU."},
+          {id:"p11",cat:"park",type:"park",text:"P",name:"Parking Sports",at:[240,706],desc:"Parking de la Salle des Sports."},
+          {id:"p12",cat:"park",type:"park",text:"P",name:"Parking FSA",at:[510,868],desc:"Parking au sud de la FSA."}
+        ]
+      }
+    };
+
+    var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});};
+
+    /* Carte Leaflet en CRS geographique standard — tuiles OSM = fond complet, zero blanc */
+    var cmap=L.map("carte-map",{zoomControl:false,attributionControl:true});
+
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",{
+      attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributeurs &copy; <a href="https://carto.com/attributions" target="_blank">CARTO</a>',
+      subdomains:'abcd',
+      maxZoom:20
+    }).addTo(cmap);
+
+    L.control.zoom({position:"bottomright",zoomInTitle:"Zoom avant",zoomOutTitle:"Zoom arriere"}).addTo(cmap);
+
+    var HomeCtl=L.Control.extend({onAdd:function(){
+      var b=L.DomUtil.create("a","leaflet-bar home-btn");
+      b.href="#";b.title="Reinitialiser la vue";b.setAttribute("role","button");b.setAttribute("aria-label","Reinitialiser la vue");b.textContent="\u2302";
+      L.DomEvent.on(b,"click",function(e){L.DomEvent.stop(e);cmap.closePopup();if(ccurrent)cmap.flyTo(REF[ccurrent.id].center,REF[ccurrent.id].zoom,{duration:0.8});});
+      return b;
+    }});
+    cmap.addControl(new HomeCtl({position:"bottomright"}));
+
+    var ccurrent=null;
+
+    function cpopupHtml(f){
+      var h='<div class="pp"><h3>';
+      if(f.badge) h+='<span class="bdg '+(f.hl==="crous"?"crous":"")+'">'+esc(f.badge)+'</span>';
+      h+=esc(f.title||f.name)+'</h3>';
+      if(f.depts) h+=f.depts.map(function(d){return'<span class="chip">'+esc(d)+'</span>';}).join("");
+      if(f.desc) h+="<p>"+f.desc+"</p>";
+      if(f.html) h+=f.html;
+      (f.actions||[]).forEach(function(a){
+        h+='<button class="btn-pop '+(a.cls||"")+'" data-cview="'+a.view+'"'+(a.feat?' data-cfeat="'+a.feat+'"':"")+'>'+esc(a.label)+'</button>';
+      });
+      return h+"</div>";
+    }
+
+    function cbuild(viewId){
+      var v=VIEWS[viewId];var r=v.ref;
+      v.groups={};
+      v.filters.forEach(function(f){v.groups[f.cat]=L.layerGroup();});
+      v.features.forEach(function(f){
+        var g=v.groups[f.cat];
+        if(f.shapes){
+          var style={color:f.color,weight:f.hl?3:2,fillColor:f.color,fillOpacity:f.hl?0.4:0.28,
+            className:f.hl==="rt"?"star-shape":f.hl==="crous"?"crous-shape":""};
+          f.layer=L.featureGroup(f.shapes.map(function(ring){
+            return L.polygon(ring.map(function(p){return px2ll(r,p);}),style);
+          }));
+          f.layer.on("mouseover",function(){f.layer.setStyle({fillOpacity:0.6,weight:3.5});});
+          f.layer.on("mouseout",function(){f.layer.setStyle({fillOpacity:f.hl?0.4:0.28,weight:f.hl?3:2});});
+          f.layer.bindTooltip(esc(f.short||f.name),{sticky:true});
+          f.center=f.layer.getBounds().getCenter();
+          g.addLayer(f.layer);
+          if(f.pin){
+            var pinLL=px2ll(r,f.pin);
+            var pin=L.marker(pinLL,{title:f.pin[2],
+              icon:L.divIcon({className:"pin "+f.hl,html:'<div class="pin-in"><b>'+esc(f.pin[2])+'</b></div><i></i>',iconSize:[0,0]})});
+            pin.on("click",function(){copenFeat(f);});
+            g.addLayer(pin);
+          }
+        } else {
+          f.center=L.latLng(px2ll(r,f.at));
+          f.layer=L.marker(f.center,{title:f.name,
+            icon:L.divIcon({className:"",html:'<div class="pt '+f.type+'">'+esc(f.type==="dae"?"DAE":f.text)+'</div>',iconSize:[0,0]})});
+          f.layer.bindTooltip(esc(f.name));
+          g.addLayer(f.layer);
+          if(f.line) g.addLayer(L.polyline(f.line.map(function(p){return px2ll(r,p);}),{color:"#40505a",weight:5,dashArray:"2 8",opacity:0.8,interactive:false}));
+        }
+        f.layer.bindPopup(function(){return cpopupHtml(f);},{maxWidth:320,autoPanPadding:[30,30]});
+      });
+    }
+
+    var clayersCtl=null;
+    function csetView(id){
+      cmap.closePopup();
+      if(ccurrent){Object.keys(ccurrent.groups).forEach(function(k){cmap.removeLayer(ccurrent.groups[k]);});}
+      if(clayersCtl) clayersCtl.remove();
+      ccurrent=VIEWS[id];ccurrent.id=id;
+      var overlays={};
+      ccurrent.filters.forEach(function(f){ccurrent.groups[f.cat].addTo(cmap);overlays[f.label]=ccurrent.groups[f.cat];});
+      clayersCtl=L.control.layers(null,overlays,{collapsed:true,position:"bottomleft"}).addTo(cmap);
+      cmap.setView(REF[id].center, REF[id].zoom);
+      document.querySelectorAll(".carte-tab").forEach(function(b){b.classList.toggle("on",b.dataset.cview===id);b.setAttribute("aria-selected",b.dataset.cview===id);});
+    }
+
+    function copenFeat(f){f.layer.openPopup(f.center);}
+
+    function cgoTo(viewId,featId){
+      var alreadyOn=ccurrent&&ccurrent.id===viewId;
+      if(!alreadyOn) csetView(viewId);
+      setTimeout(function(){
+        if(!featId) return cmap.flyTo(REF[viewId].center,REF[viewId].zoom,{duration:0.8});
+        var f=ccurrent.features.filter(function(x){return x.id===featId;})[0];if(!f) return;
+        var g=ccurrent.groups[f.cat];if(!cmap.hasLayer(g)) g.addTo(cmap);
+        cmap.flyTo(f.center,Math.min(REF[viewId].zoom+1,19),{duration:1.1});
+        setTimeout(function(){copenFeat(f);},1200);
+      },alreadyOn?0:600);
+    }
+
+    document.addEventListener("click",function(e){
+      var b=e.target.closest("[data-cview]");
+      if(b&&b.closest("#carte")){cgoTo(b.dataset.cview,b.dataset.cfeat);}
+    });
+
+    window.addEventListener("resize",function(){cmap.invalidateSize();});
+    document.getElementById("carte-bg").style.display="none";
+
+    Object.keys(VIEWS).forEach(cbuild);
+    csetView("iut");
+    })();
+    </script>
+
+    <!-- Hôtels -->
+    <h3 class="block-title">🏨 Hébergement</h3>
+    <div class="card" style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Hôtel</th><th>Distance IUT</th><th>Tarif indicatif</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr><td>Hôtel n°1</td><td class="mono">X min à pied</td><td class="mono">~XX €/nuit</td><td><span class="pill a2">Économique</span></td></tr>
+          <tr><td>Hôtel n°2</td><td class="mono">X min en voiture</td><td class="mono">~XX €/nuit</td><td><span class="pill a1">Milieu de gamme</span></td></tr>
+          <tr><td>Hôtel n°3</td><td class="mono">X min en voiture</td><td class="mono">~XX €/nuit</td><td><span class="pill a1">Milieu de gamme</span></td></tr>
+          <tr><td>Hôtel n°4 (centre-ville)</td><td class="mono">X min en bus</td><td class="mono">~XX €/nuit</td><td><span class="pill a3">Charme</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Restaurants -->
+    <h3 class="block-title">🍽️ Nos bonnes adresses à Béthune</h3>
+    <div class="moments" id="diet-filter" aria-label="Filtrer par régime alimentaire">
+      <button class="moment on" data-f="all">Tout voir</button>
+      <button class="moment" data-f="veg">🌱 Végétarien</button>
+      <button class="moment" data-f="halal">☪️ Halal</button>
+      <button class="moment" data-f="allerg">⚠️ Infos allergènes</button>
+    </div>
+    <div class="grid-3">
+      <div class="card resto-cat">
+        <h4>🥪 Le midi, sur le pouce</h4>
+        <ul>
+          <li data-tags="veg halal allerg"><span>Adresse n°1 <span class="diet">🌱☪️⚠️</span></span><span class="mono">X min</span></li>
+          <li data-tags="halal"><span>Adresse n°2 <span class="diet">☪️</span></span><span class="mono">X min</span></li>
+          <li data-tags="veg"><span>Adresse n°3 <span class="diet">🌱</span></span><span class="mono">X min</span></li>
+        </ul>
+      </div>
+      <div class="card resto-cat">
+        <h4>🍺 Brasseries</h4>
+        <ul>
+          <li data-tags="veg allerg"><span>Brasserie n°1 <span class="diet">🌱⚠️</span></span><span class="mono">Grand'Place</span></li>
+          <li data-tags=""><span>Brasserie n°2</span><span class="mono">Centre</span></li>
+          <li data-tags="veg"><span>Brasserie n°3 <span class="diet">🌱</span></span><span class="mono">Centre</span></li>
+        </ul>
+      </div>
+      <div class="card resto-cat">
+        <h4>🧀 Spécialités du Nord</h4>
+        <ul>
+          <li data-tags=""><span>Carbonade flamande</span><span class="mono">Adresse ?</span></li>
+          <li data-tags="veg"><span>Welsh (version végé) <span class="diet">🌱</span></span><span class="mono">Adresse ?</span></li>
+          <li data-tags="veg allerg"><span>Tarte au maroilles <span class="diet">🌱⚠️</span></span><span class="mono">Adresse ?</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="card diet-info">
+      <b>🌱 Végétarien · ☪️ Halal · ⚠️ Allergènes affichés sur place</b>
+      <p>Pictos indicatifs, à vérifier auprès de chaque restaurant. Allergies ou régime particulier ? Signale-le dans le formulaire d'inscription pour les repas pris à l'IUT (déjeuners, dîner de gala).</p>
+    </div>
+
+    <!-- Infos utiles -->
+    <div class="useful">
+      <div class="card"><h4>🕘 Horaires</h4><p style="font-size:.9rem">Pendant l'ACD : 8h00 – 19h00<br>Accueil : hall principal</p></div>
+      <div class="card"><h4>📞 Contact IUT</h4><p style="font-size:.9rem">IUT de Béthune — Dpt R&amp;T<br>Adresse / tél / mail à compléter</p></div>
+      <div class="card"><h4>🆘 Sur place</h4><p style="font-size:.9rem">Un·e étudiant·e référent·e par zone, badge jaune.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INSCRIPTIONS ============ -->
+<section id="inscriptions" class="alt">
+  <div class="wrap form-cta">
+    <div>
+      <span class="tag">// C. inscriptions</span>
+      <h2 class="h2">Réserve ta place</h2>
+      <p class="sub" style="margin-bottom:0">Les inscriptions se font via un formulaire Google : rien n'est stocké sur ce site.</p>
+      <div class="steps">
+        <div>Clique sur le bouton pour ouvrir le formulaire</div>
+        <div>Indique tes journées de présence, repas et hébergement</div>
+        <div>Reçois la confirmation par e-mail</div>
+      </div>
+      <a href="#" class="btn">Ouvrir le formulaire d'inscription ↗</a>
+      <p class="note" style="margin-top:12px">Date limite d'inscription : XX mai 2027</p>
+    </div>
+    <div class="form-mock" aria-hidden="true">
+      <h4 style="font-family:Inter,sans-serif">Inscription ACD R&amp;T 2027</h4>
+      <div class="f">Nom, prénom</div><div class="f">IUT / département d'origine</div><div class="f">Journées de présence : ☐ J1 ☐ J2 ☐ J3</div><div class="f">Dîner de gala : ☐ Oui ☐ Non</div><div class="f">Régime alimentaire : ☐ Végétarien ☐ Halal ☐ Autre</div><div class="f">Allergies alimentaires (précisez)</div>
+      <p class="note">Aperçu du Google Form</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DÉCOUVREZ-EN PLUS ============ -->
+<section id="decouvrir">
+  <div class="wrap">
+    <span class="tag">// D. découvrez-en plus</span>
+    <h2 class="h2">L'IUT de Béthune</h2>
+    <p class="sub">Présentation de l'IUT et de ses départements. Liste et descriptions à valider avec l'IUT.<span class="gold" title="Une lettre dorée…">V<sup>1</sup></span></p>
+    <div class="grid-4">
+      <div class="card dept host"><div class="dept-logo"><img src="img/logo-rt.png" alt="Logo département R&amp;T"></div><h3>R&amp;T</h3><p>Réseaux &amp; Télécommunications, vos hôtes !</p></div>
+      <div class="card dept"><div class="photo"><div><b>📷</b>Photo dpt</div></div><h3>Département 2</h3><p>Description courte</p></div>
+      <div class="card dept"><div class="photo"><div><b>📷</b>Photo dpt</div></div><h3>Département 3</h3><p>Description courte</p></div>
+      <div class="card dept"><div class="photo"><div><b>📷</b>Photo dpt</div></div><h3>Département 4</h3><p>Description courte</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SOUVENIRS ============ -->
+<section id="souvenirs" class="alt">
+  <div class="wrap">
+    <span class="tag">// E. souvenirs</span>
+    <h2 class="h2">L'album de l'ACD</h2>
+    <div class="post-badge">🕒 Page publiée après l'événement</div>
+    <p class="sub">Photos déposées par les participants sur le Drive partagé, triées puis ajoutées à la main ici, par moment de la journée.</p>
+
+    <div class="moments">
+      <button class="moment on" data-m="Matin">☀️ Matin</button>
+      <button class="moment" data-m="Midi">🍽️ Midi</button>
+      <button class="moment" data-m="Après-midi">🔍 Après-midi</button>
+      <button class="moment" data-m="Soirée">🌙 Soirée</button>
+    </div>
+    <div class="gallery" id="gallery"></div>
+
+    <div class="grid-2">
+      <div class="card" style="display:flex;gap:22px;align-items:center;flex-wrap:wrap">
+        <div class="qr" aria-label="QR code (placeholder)"></div>
+        <div>
+          <h3 style="margin-bottom:8px">Partage tes photos</h3>
+          <p style="font-size:.92rem;color:var(--muted)">Ce QR code sera aussi affiché physiquement dans l'IUT. Il mène au Drive partagé de l'événement.</p>
+        </div>
+      </div>
+      <div class="card gb">
+        <h3 style="margin-bottom:14px">Livre d'or</h3>
+        <div class="msg">« Meilleure ACD depuis l'invention du TCP. Le Cluedo m'a empêché de dormir. »<small>— exemple</small></div>
+        <div class="msg">« J'ai enfin compris pourquoi le switch était débranché. Merci Béthune ! »<small>— exemple</small></div>
+        <p class="note">Messages recueillis via un formulaire externe puis ajoutés ici.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PLAN À TÉLÉCHARGER (transverse) ============ -->
+<a href="#" class="dl-plan" title="Télécharger le plan de l'IUT (PDF)">⬇ Plan de l'IUT</a>
+<a href="#enigmes" class="eni-fab">🧩 Énigmes <span id="fab-count">0</span>/5</a>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <h4>ACD R&amp;T 2027</h4>
+        <p style="font-size:.9rem">Assemblée des Chef·fe·s de Département Réseaux &amp; Télécommunications, accueillie par l'IUT de Béthune.</p>
+        <div class="logos"><img src="img/logo-iut-bethune.png" alt="IUT de Béthune"><img src="img/logo-universite-artois.png" alt="Université d'Artois"><img src="img/logo-rt.png" alt="Département Réseaux informatiques &amp; Télécommunications"><div>Logo Ville de Béthune (à venir)</div></div>
+      </div>
+      <div><h4>Navigation</h4><ul><li><a href="#programme">Programme</a></li><li><a href="#jeux">Jeux</a></li><li><a href="#infos">Infos &amp; accès</a></li><li><a href="#inscriptions">Inscriptions</a></li><li><a href="#souvenirs">Souvenirs</a></li></ul></div>
+      <div><h4>Crédits</h4><ul><li>Scénario du jeu : [noms]</li><li>Dessins &amp; plan : [noms]</li><li>Design &amp; site : [noms]</li><li>BUT R&amp;T · IUT de Béthune</li></ul></div>
+    </div>
+    <div class="credits"><span>© 2027 IUT de Béthune</span><span class="mono">Site 100 % statique · 0 base de données · 0 cookie</span></div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

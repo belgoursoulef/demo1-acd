@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <title>ACD R&amp;T 2027 — IUT de Béthune</title>
+  <defs>
+    <path id="arcTop" d="M 50,256 A 206,206 0 0 1 462,256"/>
+    <path id="arcBot" d="M 36,256 A 220,220 0 0 0 476,256"/>
+  </defs>
+  <circle cx="256" cy="256" r="250" fill="#ffd23f"/>
+  <circle cx="256" cy="256" r="236" fill="#101935"/>
+  <circle cx="256" cy="256" r="180" fill="none" stroke="#2de2e6" stroke-width="2" stroke-dasharray="4 9" opacity=".7"/>
+  <g font-family="'Arial Black','Helvetica Neue',Arial,sans-serif" font-weight="900" text-anchor="middle">
+    <text font-size="19" letter-spacing="2.5" fill="#ffd23f"><textPath href="#arcTop" startOffset="50%">ASSEMBLÉE DES CHEF·FE·S DE DÉPARTEMENT</textPath></text>
+    <text font-size="19" letter-spacing="3" fill="#2de2e6"><textPath href="#arcBot" startOffset="50%">RÉSEAUX &amp; TÉLÉCOMMUNICATIONS</textPath></text>
+  </g>
+  <circle cx="44" cy="256" r="6" fill="#ff5d73"/><circle cx="468" cy="256" r="6" fill="#ff5d73"/>
+
+  <!-- ondes -->
+  <g fill="none" stroke="#ffd23f" stroke-width="6" stroke-linecap="round">
+    <path d="M240,104 Q256,92 272,104"/>
+    <path d="M226,92 Q256,70 286,92"/>
+  </g>
+  <!-- antenne / flèche du beffroi -->
+  <circle cx="256" cy="116" r="6" fill="#ffd23f"/>
+  <rect x="253" y="118" width="6" height="24" fill="#ffd23f"/>
+  <!-- tourelles -->
+  <rect x="200" y="222" width="24" height="82" fill="#2de2e6"/>
+  <rect x="288" y="222" width="24" height="82" fill="#2de2e6"/>
+  <polygon points="198,224 212,202 226,224" fill="#ff5d73"/>
+  <polygon points="286,224 300,202 314,224" fill="#ff5d73"/>
+  <!-- tour -->
+  <polygon points="218,184 256,138 294,184" fill="#ff5d73"/>
+  <rect x="224" y="182" width="64" height="122" fill="#fbf7ef"/>
+  <circle cx="256" cy="212" r="15" fill="#ffd23f" stroke="#101935" stroke-width="3"/>
+  <path d="M256,212 v-9 M256,212 h7" stroke="#101935" stroke-width="3" stroke-linecap="round"/>
+  <g fill="#101935">
+    <rect x="243" y="240" width="9" height="16" rx="2"/><rect x="260" y="240" width="9" height="16" rx="2"/>
+    <rect x="243" y="266" width="9" height="16" rx="2"/><rect x="260" y="266" width="9" height="16" rx="2"/>
+  </g>
+  <!-- câble réseau au sol -->
+  <rect x="166" y="302" width="180" height="7" rx="3.5" fill="#ffd23f"/>
+  <circle cx="166" cy="305.5" r="8" fill="#2de2e6" stroke="#101935" stroke-width="3"/>
+  <circle cx="346" cy="305.5" r="8" fill="#2de2e6" stroke="#101935" stroke-width="3"/>
+
+  <g font-family="'Arial Black','Helvetica Neue',Arial,sans-serif" font-weight="900" text-anchor="middle">
+    <text x="256" y="368" font-size="52" fill="#ffffff" letter-spacing="1">ACD <tspan fill="#ffd23f">R&amp;T</tspan></text>
+    <text x="256" y="398" font-size="16" fill="#2de2e6" letter-spacing="5">BÉTHUNE · JUIN 2027</text>
+  </g>
+</svg>
