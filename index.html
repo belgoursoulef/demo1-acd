@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -358,132 +358,125 @@
     var CROUS_MENU_URL="https://www.crous-lille.fr/restaurant/r-u-schweitzer-bethune/";
 
     /*
-     * Referentiels GPS: on projette les coordonnees pixel des plans schematiques
-     * sur la vraie carte OSM. Calibre precisement sur le campus IUT et Pole universitaire
-     * de Bethune (Rue de l'Universite, Technoparc Futura).
+     * Referentiels et coordonnees GPS exactes issues d'OpenStreetMap.
+     * Chaque polygone epouse fidelement les contours reels des batiments du campus.
      */
     var REF={
-      iut: {nw:[50.5192,2.6522],se:[50.5142,2.6602],size:[1280,930],
-            center:[50.5170,2.6562],zoom:17,title:"Plan de l'IUT de Béthune"},
-      pole:{nw:[50.5198,2.6510],se:[50.5125,2.6610],size:[1308,924],
-            center:[50.5165,2.6565],zoom:16,title:"Plan du Pôle de Béthune"}
+      iut: {center:[50.5173,2.6565],zoom:17,title:"Plan de l'IUT de Béthune"},
+      pole:{center:[50.5165,2.6570],zoom:16,title:"Plan du Pôle de Béthune"}
     };
 
-    /* Convertit coordonnees pixel [x,y] -> GPS [lat,lng] */
+    /* Convertit coordonnees pixel [x,y] -> GPS [lat,lng] (ou renvoie [lat,lng] direct si deja georeference) */
     function px2ll(r,p){
-      return[
-        r.nw[0]-(p[1]/r.size[1])*(r.nw[0]-r.se[0]),
-        r.nw[1]+(p[0]/r.size[0])*(r.se[1]-r.nw[1])
-      ];
+      if(!p) return [0,0];
+      if(p[0]>40) return [p[0],p[1]];
+      return [p[0],p[1]];
     }
 
     var VIEWS={
       iut:{
         ref:REF.iut,
         filters:[
-          {cat:"bat",  label:"Batiments A a K"},
-          {cat:"acces",label:"Acces pietons et vehicules"},
-          {cat:"dae",  label:"DAE (defibrillateurs)"},
+          {cat:"bat",  label:"Bâtiments A à K"},
+          {cat:"acces",label:"Accès piétons et véhicules"},
+          {cat:"dae",  label:"DAE (défibrillateurs)"},
           {cat:"rass", label:"Points de rassemblement"}
         ],
         features:[
-          {id:"J",cat:"bat",name:"Batiment J",short:"J",color:"#5b2a86",hl:"rt",
-            title:"Batiment J \u2014 Departement R&T",badge:"\u2605 Departement R&T",
-            pin:[468,158,"\u2605 Departement R&T"],depts:["R&T"],
-            desc:"Batiment principal du departement <strong>R&T (Reseaux &amp; Telecommunications)</strong>. Le departement occupe aussi des salles au <strong>Batiment H</strong>.",
-            actions:[{label:"Voir aussi le Bat. H",view:"iut",feat:"H",cls:"rt"}],
-            shapes:[[[437,140],[512,122],[512,208],[497,211]]]},
-          {id:"A",cat:"bat",name:"Batiment A",short:"A",color:"#e6d23c",depts:["Administration","Accueil"],
-            desc:"Administration et accueil de l'IUT. Defibrillateur (DAE) a proximite.",
-            shapes:[[[338,400],[362,400],[374,490],[425,490],[425,522],[374,522],[374,620],[318,620],[318,500]]]},
-          {id:"B",cat:"bat",name:"Batiment B",short:"B",color:"#0f6b78",depts:["Chimie","QLIO"],
-            desc:"Departements Chimie et QLIO (Qualite, Logistique Industrielle et Organisation).",
-            shapes:[[[425,484],[672,484],[672,530],[425,530]]]},
-          {id:"C",cat:"bat",name:"Batiment C",short:"C",color:"#c9cd22",depts:["Chimie"],
-            desc:"Departement Chimie. Defibrillateur (DAE) a la jonction des batiments B et C.",
-            shapes:[[[648,530],[668,530],[668,566],[712,566],[724,735],[644,740],[632,566],[648,566]]]},
-          {id:"D",cat:"bat",name:"Batiment D",short:"D",color:"#3fa63f",depts:["Chimie"],
-            desc:"Departement Chimie.",shapes:[[[718,497],[795,490],[800,568],[728,568]]]},
-          {id:"E",cat:"bat",name:"Batiment E",short:"E",color:"#6b7a8a",depts:["GCCD"],
-            desc:"Departement GCCD (Genie Civil - Construction Durable). Defibrillateur (DAE) dans le batiment.",
-            shapes:[[[558,284],[628,284],[628,438],[558,438]]]},
-          {id:"F",cat:"bat",name:"Batiment F",short:"F",color:"#9a9a9a",depts:["GCCD"],
-            desc:"Departement GCCD (Genie Civil - Construction Durable).",
-            shapes:[[[648,325],[830,325],[843,445],[660,445],[660,422],[628,422],[628,355],[648,355]]]},
-          {id:"G",cat:"bat",name:"Batiment G",short:"G",color:"#6fb6c9",depts:["Amphitheatres"],
-            desc:"Amphitheatres.",shapes:[[[330,372],[388,372],[388,350],[485,350],[485,402],[330,402]]]},
-          {id:"H",cat:"bat",name:"Batiment H",short:"H",color:"#8a3a63",depts:["R&T","GEII","GMP"],
-            desc:"Departements R&T, GEII (Genie Electrique et Informatique Industrielle) et GMP (Genie Mecanique et Productique). Defibrillateur (DAE) dans le batiment.",
-            actions:[{label:"Aller au Bat. J (R&T)",view:"iut",feat:"J",cls:"rt"}],
-            shapes:[[[272,262],[558,252],[560,300],[272,318]]]},
-          {id:"I",cat:"bat",name:"Batiment I",short:"I",color:"#a3182e",depts:["GMP","QLIO"],
-            desc:"Departements GMP et QLIO.",
-            shapes:[[[222,151],[413,151],[413,228],[372,228],[372,255],[347,255],[347,228],[222,228]]]},
-          {id:"K",cat:"bat",name:"Batiment K",short:"K",color:"#1f2a66",depts:["GEII"],
-            desc:"Departement GEII (Genie Electrique et Informatique Industrielle).",
-            shapes:[[[527,105],[663,105],[663,265],[562,265],[562,285],[527,285]]]},
-          {id:"dae-a",cat:"dae",type:"dae",name:"DAE - Batiment A",at:[381,512],desc:"Defibrillateur pres de l'accueil."},
-          {id:"dae-bc",cat:"dae",type:"dae",name:"DAE - Jonction B / C",at:[656,544],desc:"Defibrillateur entre les batiments B et C."},
-          {id:"dae-e",cat:"dae",type:"dae",name:"DAE - Batiment E",at:[589,394],desc:"Defibrillateur dans le batiment E."},
-          {id:"dae-h",cat:"dae",type:"dae",name:"DAE - Batiment H",at:[432,284],desc:"Defibrillateur dans le batiment H."},
-          {id:"pr1",cat:"rass",type:"rass",text:"1",name:"Point de rassemblement 1",at:[423,643],desc:"Pelouse devant l'accueil, cote rue de l'Universite."},
-          {id:"pr2",cat:"rass",type:"rass",text:"2",name:"Point de rassemblement 2",at:[180,248],desc:"Cote ouest du site."},
-          {id:"pr3",cat:"rass",type:"rass",text:"3",name:"Point de rassemblement 3",at:[456,198],desc:"Pres du Batiment J."},
-          {id:"pr4",cat:"rass",type:"rass",text:"4",name:"Point de rassemblement 4",at:[708,261],desc:"Cote est du site, derriere les batiments E et F."},
-          {id:"acc-p",cat:"acces",type:"acces",text:"\uD83D\uDEB6 Acces pietons",name:"Acces pietons",at:[382,822],
-            desc:"Entree pietonne depuis la rue de l'Universite.",line:[[382,560],[382,815]]},
-          {id:"acc-v",cat:"acces",type:"acces",text:"\uD83D\uDE97 Acces vehicules",name:"Acces vehicules",at:[668,812],
-            desc:"Entree vehicules, rue de l'Universite. Sens de circulation a respecter."}
+          {id:"J",cat:"bat",name:"Bâtiment J",short:"J",color:"#5b2a86",hl:"rt",
+            title:"Bâtiment J — Département R&T",badge:"★ Département R&T",
+            pin:[50.51815,2.65658,"★ Département R&T"],depts:["R&T"],
+            desc:"Bâtiment principal du département <strong>R&T (Réseaux &amp; Télécommunications)</strong>. Le département occupe aussi des salles au <strong>Bâtiment H</strong>.",
+            actions:[{label:"Voir aussi le Bât. H",view:"iut",feat:"H",cls:"rt"}],
+            shapes:[[[50.518288,2.656448],[50.518281,2.65675],[50.517795,2.65675],[50.517799,2.656424],[50.518288,2.656448]]]},
+          {id:"K",cat:"bat",name:"Bâtiment K",short:"K",color:"#1f2a66",depts:["GEII"],
+            desc:"Département GEII (Génie Électrique et Informatique Industrielle).",
+            shapes:[[[50.518281,2.65675],[50.518274,2.657076],[50.517783,2.657051],[50.517786,2.656923],[50.517656,2.656933],[50.517795,2.65675],[50.518281,2.65675]]]},
+          {id:"H",cat:"bat",name:"Bâtiment H",short:"H",color:"#8a3a63",depts:["R&T","GEII","GMP"],
+            desc:"Départements R&T, GEII et GMP. Défibrillateur (DAE) dans le bâtiment.",
+            actions:[{label:"Aller au Bât. J (R&T)",view:"iut",feat:"J",cls:"rt"}],
+            shapes:[[[50.517769,2.655933],[50.517791,2.6554],[50.517456,2.6554],[50.517438,2.655861],[50.51752,2.655866],[50.517517,2.655976],[50.517769,2.655933]]]},
+          {id:"I",cat:"bat",name:"Bâtiment I",short:"I",color:"#a3182e",depts:["GMP","QLIO"],
+            desc:"Départements GMP et QLIO.",
+            shapes:[[[50.517791,2.6554],[50.517791,2.654963],[50.517557,2.654953],[50.517557,2.654979],[50.517456,2.654973],[50.517456,2.6554],[50.517791,2.6554]]]},
+          {id:"G",cat:"bat",name:"Bâtiment G",short:"G",color:"#6fb6c9",depts:["Amphithéâtres"],
+            desc:"Amphithéâtres du campus de l'IUT.",
+            shapes:[[[50.517438,2.655861],[50.51752,2.655866],[50.517517,2.655976],[50.517672,2.656188],[50.517606,2.656184],[50.517611,2.655926],[50.517769,2.655933],[50.517662,2.656698],[50.517478,2.656813],[50.517134,2.656209],[50.516901,2.655947],[50.517438,2.655861]]]},
+          {id:"E",cat:"bat",name:"Bâtiment E",short:"E",color:"#6b7a8a",depts:["GCCD"],
+            desc:"Département GCCD (Génie Civil - Construction Durable). Défibrillateur (DAE) dans le bâtiment.",
+            shapes:[[[50.517469,2.657248],[50.517478,2.656813],[50.517498,2.656814],[50.517496,2.656924],[50.517656,2.656933],[50.517658,2.656916],[50.517786,2.656923],[50.51776,2.657363],[50.517469,2.657248]]]},
+          {id:"F",cat:"bat",name:"Bâtiment F",short:"F",color:"#9a9a9a",depts:["GCCD"],
+            desc:"Département GCCD (Génie Civil - Construction Durable).",
+            shapes:[[[50.517715,2.657509],[50.517711,2.657666],[50.51766,2.657664],[50.517648,2.658279],[50.517806,2.658287],[50.51782,2.657624],[50.517757,2.657621],[50.517918,2.657621],[50.51807,2.657638],[50.518074,2.65735],[50.517925,2.657343],[50.517715,2.657509]]]},
+          {id:"A",cat:"bat",name:"Bâtiment A",short:"A",color:"#e6d23c",depts:["Administration","Accueil"],
+            desc:"Administration et accueil de l'IUT. Défibrillateur (DAE) à proximité.",
+            shapes:[[[50.517046,2.655216],[50.51696,2.655211],[50.51696,2.655233],[50.516473,2.655207],[50.516473,2.655186],[50.516403,2.655181],[50.516393,2.655662],[50.516839,2.655684],[50.516833,2.655695],[50.517038,2.655695],[50.517046,2.655216]]]},
+          {id:"B",cat:"bat",name:"Bâtiment B",short:"B",color:"#0f6b78",depts:["Chimie","QLIO"],
+            desc:"Départements Chimie et QLIO (Qualité, Logistique Industrielle et Organisation).",
+            shapes:[[[50.516833,2.655944],[50.516607,2.655933],[50.516602,2.656185],[50.517105,2.656207],[50.5171,2.656514],[50.516965,2.656508],[50.516963,2.656586],[50.516795,2.656576],[50.516791,2.656712],[50.516848,2.656714],[50.516846,2.656806],[50.517122,2.656795],[50.517125,2.656671],[50.517134,2.656209],[50.516833,2.655944]]]},
+          {id:"C",cat:"bat",name:"Bâtiment C",short:"C",color:"#c9cd22",depts:["Chimie"],
+            desc:"Département Chimie. Défibrillateur (DAE) à la jonction des bâtiments B et C.",
+            shapes:[[[50.516846,2.656806],[50.516822,2.656806],[50.516808,2.657503],[50.51684,2.657506],[50.516839,2.657606],[50.516911,2.657509],[50.516915,2.657355],[50.517078,2.657363],[50.517076,2.657479],[50.517114,2.65723],[50.517084,2.657228],[50.517092,2.656794],[50.516846,2.656806]]]},
+          {id:"D",cat:"bat",name:"Bâtiment D",short:"D",color:"#3fa63f",depts:["Chimie"],
+            desc:"Département Chimie.",
+            shapes:[[[50.516839,2.657606],[50.516791,2.657603],[50.516789,2.657764],[50.516906,2.657776],[50.516909,2.657611],[50.516891,2.65761],[50.516839,2.657606]]]},
+
+          {id:"dae-a",cat:"dae",type:"dae",name:"DAE — Bâtiment A",at:[50.51680,2.65568],desc:"Défibrillateur près de l'accueil."},
+          {id:"dae-bc",cat:"dae",type:"dae",name:"DAE — Jonction B / C",at:[50.51685,2.65675],desc:"Défibrillateur entre les bâtiments B et C."},
+          {id:"dae-e",cat:"dae",type:"dae",name:"DAE — Bâtiment E",at:[50.51760,2.65700],desc:"Défibrillateur dans le bâtiment E."},
+          {id:"dae-h",cat:"dae",type:"dae",name:"DAE — Bâtiment H",at:[50.51765,2.65570],desc:"Défibrillateur dans le bâtiment H."},
+
+          {id:"pr1",cat:"rass",type:"rass",text:"1",name:"Point de rassemblement 1",at:[50.51625,2.65550],desc:"Pelouse sud devant l'accueil."},
+          {id:"pr2",cat:"rass",type:"rass",text:"2",name:"Point de rassemblement 2",at:[50.51765,2.65470],desc:"Côté ouest du site, près du bassin."},
+          {id:"pr3",cat:"rass",type:"rass",text:"3",name:"Point de rassemblement 3",at:[50.51810,2.65630],desc:"Près du Bâtiment J (R&T)."},
+          {id:"pr4",cat:"rass",type:"rass",text:"4",name:"Point de rassemblement 4",at:[50.51790,2.65800],desc:"Côté est du site, derrière les bâtiments E et F."},
+
+          {id:"acc-p",cat:"acces",type:"acces",text:"🚶 Accès piétons",name:"Accès piétons",at:[50.51640,2.65720],
+            desc:"Entrée piétonne depuis la rue de l'Université.",line:[[50.51670,2.65680],[50.51640,2.65720],[50.51620,2.65780]]},
+          {id:"acc-v",cat:"acces",type:"acces",text:"🚗 Accès véhicules",name:"Accès véhicules",at:[50.51610,2.65800],
+            desc:"Entrée véhicules, rue de l'Université. Sens de circulation à respecter."}
         ]
       },
       pole:{
         ref:REF.pole,
         filters:[
-          {cat:"bat",  label:"Etablissements"},
+          {cat:"bat",  label:"Établissements"},
           {cat:"park", label:"Parkings"}
         ],
         features:[
-          {id:"iut",cat:"bat",name:"IUT de Bethune",short:"IUT de Bethune",color:"#ff8a35",
+          {id:"iut",cat:"bat",name:"IUT de Béthune",short:"IUT de Béthune",color:"#ff8a35",
             depts:["Chimie","GCCD","GEII","GMP","QLIO","R&T"],
-            desc:"Institut Universitaire de Technologie - Universite d'Artois. Le departement R&T se trouve principalement au Batiment J.",
-            actions:[{label:"Voir le plan detaille A-K",view:"iut"},{label:"\u2605 Bat. J (R&T)",view:"iut",feat:"J",cls:"rt"}],
-            shapes:[
-              [[316,160],[482,160],[482,252],[316,252]],[[482,195],[622,195],[622,240],[482,240]],
-              [[566,28],[644,28],[644,200],[566,200]],[[708,165],[750,165],[750,420],[708,420]],
-              [[720,85],[768,85],[768,170],[720,170]],[[766,152],[878,152],[878,198],[766,198]],
-              [[484,240],[526,240],[526,478],[484,478]],[[358,360],[440,360],[440,532],[358,532]],
-              [[338,270],[414,270],[414,305],[350,330]],[[580,388],[792,388],[792,428],[580,428]],
-              [[622,240],[700,240],[700,420],[622,420]]
-            ]},
-          {id:"crous",cat:"bat",name:"CROUS - R.U. Schweitzer et Residence",short:"CROUS",color:"#00a650",hl:"crous",
-            badge:"Restauration",pin:[960,515,"CROUS \u00B7 Menu du jour"],
-            title:"CROUS - R.U. Schweitzer et Residence",
-            desc:"<strong>1326 rue de l'Universite, 62400 Bethune</strong><br>Tel. : <a href=\"tel:+33374091289\">03 74 09 12 89</a>"+
-                 "<br><strong>R.U. :</strong> 11h15 - 13h45 (paiement Izly)<br><strong>Cafeteria :</strong> 11h15 - 15h00 (paiement CB)<br>Acces PMR",
+            desc:"Institut Universitaire de Technologie — Université d'Artois. Le département R&T se trouve principalement au Bâtiment J.",
+            actions:[{label:"Voir le plan détaillé A-K",view:"iut"},{label:"★ Bât. J (R&T)",view:"iut",feat:"J",cls:"rt"}],
+            shapes:[[[50.518288,2.656448],[50.517799,2.656424],[50.517798,2.656482],[50.517792,2.656705],[50.517727,2.656702],[50.517662,2.656698],[50.517672,2.656188],[50.517606,2.656184],[50.517611,2.655926],[50.517769,2.655933],[50.517791,2.654963],[50.517557,2.654953],[50.517557,2.654979],[50.517456,2.654973],[50.517438,2.655861],[50.51752,2.655866],[50.517517,2.655976],[50.516901,2.655947],[50.516906,2.655689],[50.517038,2.655695],[50.517046,2.655216],[50.51696,2.655211],[50.51696,2.655233],[50.516473,2.655207],[50.516473,2.655186],[50.516403,2.655181],[50.516393,2.655662],[50.516839,2.655684],[50.516833,2.655944],[50.516607,2.655933],[50.516602,2.656185],[50.517105,2.656207],[50.5171,2.656514],[50.516965,2.656508],[50.516963,2.656586],[50.516795,2.656576],[50.516791,2.656712],[50.516848,2.656714],[50.516846,2.656806],[50.516822,2.656806],[50.516808,2.657503],[50.51684,2.657506],[50.516839,2.657606],[50.516791,2.657603],[50.516789,2.657764],[50.516906,2.657776],[50.516909,2.657611],[50.516891,2.65761],[50.516894,2.657508],[50.516911,2.657509],[50.516915,2.657355],[50.517078,2.657363],[50.517076,2.657479],[50.517715,2.657509],[50.517711,2.657666],[50.51766,2.657664],[50.517648,2.658279],[50.517806,2.658287],[50.51782,2.657624],[50.517757,2.657621],[50.517757,2.657613],[50.517918,2.657621],[50.517918,2.657629],[50.51807,2.657638],[50.518074,2.65735],[50.517925,2.657343],[50.517924,2.657369],[50.51776,2.657363],[50.517762,2.657263],[50.517469,2.657248],[50.517471,2.657128],[50.517472,2.657081],[50.517474,2.657011],[50.517478,2.656813],[50.517498,2.656814],[50.517496,2.656924],[50.517656,2.656933],[50.517658,2.656916],[50.517786,2.656923],[50.517783,2.657051],[50.518274,2.657076],[50.518288,2.656448]]]},
+          {id:"crous",cat:"bat",name:"CROUS — R.U. Schweitzer et Résidence",short:"CROUS",color:"#00a650",hl:"crous",
+            badge:"Restauration",pin:[50.51630,2.65852,"CROUS · Menu du jour"],
+            title:"CROUS — R.U. Schweitzer et Résidence",
+            desc:"<strong>1326 rue de l'Université, 62400 Béthune</strong><br>Tél. : <a href=\"tel:+33374091289\">03 74 09 12 89</a>"+
+                 "<br><strong>R.U. :</strong> 11h15 - 13h45 (paiement Izly)<br><strong>Cafétéria :</strong> 11h15 - 15h00 (paiement CB)<br>Accès PMR",
             html:"<p><a class=\"btn-pop crous\" href=\""+CROUS_MENU_URL+"\" target=\"_blank\" rel=\"noopener noreferrer\">Voir le menu du jour (CROUS)</a></p>",
-            shapes:[[[886,428],[926,428],[926,697],[886,697]],[[926,495],[978,495],[978,590],[926,590]],[[843,545],[926,545],[926,580],[843,580]]]},
-          {id:"fsa",cat:"bat",name:"FSA",short:"FSA",color:"#1380b5",desc:"Faculte des Sciences Appliquees.",
-            shapes:[[[332,672],[500,672],[500,718],[332,735]],[[520,640],[580,640],[580,732],[520,732]],
-                    [[598,517],[636,517],[636,665],[598,665]],[[402,610],[430,590],[500,630],[530,680],[480,690],[440,625]]]},
-          {id:"bu",cat:"bat",name:"BU",short:"BU",color:"#b02e20",desc:"Bibliotheque Universitaire.",
-            shapes:[[[1180,260],[1262,262],[1255,350],[1190,350],[1180,305]]]},
-          {id:"ei",cat:"bat",name:"Ecole d'Ingenieurs de l'Artois",short:"Ecole d'Ingenieurs",color:"#e0185a",
-            desc:"Ecole d'Ingenieurs de l'Artois.",
-            shapes:[[[1062,190],[1100,160],[1140,125],[1165,122],[1168,190],[1196,185],[1196,212],[1140,215],[1135,290],[1120,290],[1075,225]]]},
-          {id:"sports",cat:"bat",name:"Salle des Sports",short:"Salle des Sports",color:"#3d7a52",desc:"Salle des Sports du campus.",
-            shapes:[[[12,862],[95,786],[125,795],[160,830],[155,862],[100,895],[75,895]]]},
-          {id:"p1",cat:"park",type:"park",text:"P",name:"Parking securise",at:[1127,160],desc:"Parking securise voitures et motos."},
-          {id:"p2",cat:"park",type:"park",text:"P",name:"Parking securise",at:[1112,288],desc:"Parking securise voitures et motos."},
-          {id:"p3",cat:"park",type:"park",text:"P",name:"Parking securise",at:[628,668],desc:"Parking securise voitures et motos."},
-          {id:"p4",cat:"park",type:"park",text:"P",name:"Parking",at:[742,630],desc:"Grand parking central."},
-          {id:"p5",cat:"park",type:"park",text:"P",name:"Parking IUT",at:[455,328],desc:"Parking de l'IUT."},
-          {id:"p6",cat:"park",type:"park",text:"P",name:"Parking",at:[716,463],desc:"Parking au sud de l'IUT."},
-          {id:"p7",cat:"park",type:"park",text:"P",name:"Parking",at:[773,312],desc:"Parking a l'est de l'IUT."},
-          {id:"p8",cat:"park",type:"park",text:"P",name:"Parking",at:[381,135],desc:"Parking au nord de l'IUT."},
-          {id:"p9",cat:"park",type:"park",text:"P",name:"Parking Ingenieurs",at:[1092,131],desc:"Parking de l'Ecole d'Ingenieurs."},
-          {id:"p10",cat:"park",type:"park",text:"P",name:"Parking BU",at:[1166,442],desc:"Parking de la BU."},
-          {id:"p11",cat:"park",type:"park",text:"P",name:"Parking Sports",at:[240,706],desc:"Parking de la Salle des Sports."},
-          {id:"p12",cat:"park",type:"park",text:"P",name:"Parking FSA",at:[510,868],desc:"Parking au sud de la FSA."}
+            shapes:[[[50.515774,2.658329],[50.515772,2.658475],[50.516191,2.658491],[50.516185,2.658904],[50.516235,2.658906],[50.516234,2.658948],[50.516245,2.658948],[50.516245,2.658966],[50.516263,2.658967],[50.516263,2.658949],[50.516273,2.658949],[50.516274,2.658907],[50.516506,2.658916],[50.516507,2.658845],[50.516539,2.658847],[50.516541,2.658751],[50.516523,2.65875],[50.516525,2.658634],[50.516393,2.658629],[50.516394,2.658522],[50.516419,2.658523],[50.516419,2.658543],[50.516787,2.658557],[50.51679,2.658404],[50.516446,2.658391],[50.516446,2.658347],[50.516331,2.658343],[50.516331,2.658308],[50.51639,2.658308],[50.51639,2.658219],[50.516336,2.658217],[50.516335,2.658071],[50.51622,2.658067],[50.516216,2.658346],[50.515774,2.658329]]]},
+          {id:"fsa",cat:"bat",name:"FSA — Faculté des Sciences Appliquées",short:"FSA",color:"#1380b5",
+            desc:"Faculté des Sciences Appliquées — Université d'Artois.",
+            shapes:[[[50.515693,2.656187],[50.51564,2.656194],[50.515641,2.656293],[50.515661,2.656297],[50.515663,2.65636],[50.515651,2.656374],[50.515742,2.656527],[50.515784,2.656468],[50.515889,2.656649],[50.515883,2.656664],[50.515885,2.65671],[50.515893,2.656734],[50.515949,2.656827],[50.515961,2.656811],[50.515979,2.65684],[50.516052,2.656842],[50.516459,2.656854],[50.516461,2.656618],[50.515952,2.65661],[50.515951,2.656486],[50.515972,2.656462],[50.515979,2.656476],[50.516026,2.656427],[50.515981,2.656343],[50.515923,2.656272],[50.51594,2.656236],[50.515974,2.656274],[50.515982,2.656255],[50.516073,2.656418],[50.516141,2.656362],[50.516175,2.656461],[50.516393,2.656285],[50.516359,2.656177],[50.516364,2.656172],[50.516326,2.656055],[50.516247,2.65612],[50.51627,2.656191],[50.516225,2.656229],[50.516202,2.656166],[50.516107,2.656246],[50.516085,2.656209],[50.516108,2.656173],[50.516051,2.656094],[50.516032,2.656135],[50.516012,2.656111],[50.51608,2.655954],[50.516051,2.655921],[50.516079,2.655856],[50.516109,2.65589],[50.516195,2.655693],[50.516148,2.655641],[50.516181,2.655564],[50.516157,2.655538],[50.516151,2.655549],[50.516058,2.655452],[50.515939,2.655923],[50.515849,2.655881],[50.51585,2.655819],[50.515865,2.65582],[50.515866,2.655606],[50.515875,2.655064],[50.515815,2.655053],[50.515812,2.655096],[50.515781,2.655092],[50.515776,2.655252],[50.515733,2.655249],[50.515735,2.655192],[50.515638,2.655186],[50.515633,2.655519],[50.515632,2.655577],[50.515687,2.655579],[50.515682,2.65565],[50.515674,2.65603],[50.515741,2.656034],[50.51574,2.656168],[50.515755,2.656171],[50.515755,2.656188],[50.515693,2.656187]]]},
+          {id:"bu",cat:"bat",name:"BU — Bibliothèque Universitaire",short:"BU",color:"#b02e20",
+            desc:"Bibliothèque Universitaire de Béthune.",
+            shapes:[[[50.516952,2.659316],[50.516869,2.659344],[50.516903,2.659413],[50.516883,2.659444],[50.516865,2.659482],[50.516845,2.659563],[50.516816,2.659563],[50.516812,2.65962],[50.516833,2.65963],[50.516842,2.659688],[50.516867,2.659757],[50.516881,2.659785],[50.516896,2.659771],[50.516921,2.659802],[50.516923,2.659836],[50.516954,2.65986],[50.516999,2.659865],[50.517038,2.65986],[50.51704,2.65989],[50.517078,2.65988],[50.517079,2.659842],[50.517109,2.659809],[50.517122,2.659793],[50.517131,2.659776],[50.517139,2.659761],[50.51718,2.659764],[50.517181,2.659764],[50.517185,2.659763],[50.517189,2.65976],[50.517191,2.659758],[50.517192,2.659755],[50.517195,2.65975],[50.517196,2.659745],[50.517197,2.659741],[50.517197,2.659737],[50.517197,2.659733],[50.517197,2.659729],[50.517195,2.659724],[50.517194,2.659721],[50.517193,2.659717],[50.517191,2.659715],[50.517189,2.659712],[50.517185,2.65971],[50.517181,2.659708],[50.517183,2.659587],[50.517136,2.659566],[50.517092,2.659535],[50.517049,2.659491],[50.516983,2.659389],[50.516952,2.659316]]]},
+          {id:"ei",cat:"bat",name:"École d'Ingénieurs de l'Artois",short:"École d'Ingénieurs",color:"#e0185a",
+            desc:"École d'Ingénieurs de l'Artois (Bâtiment Hazebrouck et annexes).",
+            shapes:[[[50.517803,2.659381],[50.517725,2.659371],[50.517723,2.659401],[50.517666,2.659391],[50.517668,2.659365],[50.517587,2.659355],[50.517583,2.659377],[50.517557,2.659377],[50.517538,2.659447],[50.517491,2.659519],[50.517459,2.659558],[50.517432,2.659583],[50.517395,2.659609],[50.517361,2.659627],[50.51733,2.659624],[50.517326,2.659711],[50.517324,2.659746],[50.517307,2.659754],[50.517305,2.659803],[50.517349,2.659808],[50.517351,2.659783],[50.517405,2.65977],[50.51747,2.65972],[50.517475,2.659709],[50.51752,2.659672],[50.517546,2.659643],[50.517576,2.659599],[50.517606,2.659543],[50.517626,2.659496],[50.517654,2.6595],[50.517651,2.659542],[50.517641,2.659543],[50.517636,2.659657],[50.517603,2.65972],[50.51759,2.659783],[50.517585,2.659831],[50.517586,2.659886],[50.517591,2.659945],[50.517555,2.659944],[50.517553,2.660039],[50.517581,2.66004],[50.517581,2.660162],[50.517659,2.660165],[50.517661,2.66013],[50.517717,2.66013],[50.517725,2.65988],[50.517781,2.659884],[50.517785,2.659957],[50.517936,2.659963],[50.517939,2.659883],[50.517905,2.65988],[50.517908,2.659762],[50.517818,2.659759],[50.517815,2.659842],[50.517751,2.65984],[50.517754,2.659579],[50.517739,2.659577],[50.517744,2.659508],[50.517796,2.659514],[50.517803,2.659381]],[[50.517425,2.660127],[50.517309,2.660124],[50.51731,2.660075],[50.517262,2.660071],[50.51726,2.660097],[50.517227,2.660094],[50.517227,2.660069],[50.517187,2.660067],[50.517185,2.660124],[50.517075,2.66012],[50.517073,2.660154],[50.517099,2.66016],[50.517097,2.660187],[50.517075,2.660186],[50.517072,2.660537],[50.517122,2.6605],[50.517125,2.660453],[50.517226,2.660458],[50.517228,2.660425],[50.51726,2.660427],[50.517259,2.660457],[50.517355,2.660461],[50.517354,2.660514],[50.517402,2.660553],[50.517408,2.660184],[50.517424,2.660185],[50.517425,2.660127]]]},
+          {id:"sports",cat:"bat",name:"Salle des Sports",short:"Salle des Sports",color:"#3d7a52",
+            desc:"Salle des Sports du campus universitaire.",
+            shapes:[[[50.515443,2.653681],[50.51515,2.653251],[50.514995,2.653511],[50.515059,2.653605],[50.515025,2.653662],[50.515051,2.6537],[50.515036,2.653727],[50.515061,2.653763],[50.515052,2.653777],[50.515096,2.653901],[50.515136,2.653978],[50.515136,2.653999],[50.515151,2.654001],[50.515152,2.654047],[50.515202,2.65405],[50.515202,2.654023],[50.515259,2.654025],[50.515282,2.654025],[50.515319,2.654085],[50.515358,2.654011],[50.515395,2.653877],[50.515362,2.653825],[50.515443,2.653681]]]},
+
+          {id:"p1",cat:"park",type:"park",text:"P",name:"Parking IUT Nord",at:[50.51840,2.65600],desc:"Parking au nord de l'IUT."},
+          {id:"p2",cat:"park",type:"park",text:"P",name:"Parking IUT Est",at:[50.51730,2.65800],desc:"Parking à l'est de l'IUT."},
+          {id:"p3",cat:"park",type:"park",text:"P",name:"Grand parking central",at:[50.51610,2.65750],desc:"Grand parking central du campus."},
+          {id:"p4",cat:"park",type:"park",text:"P",name:"Parking Résidence CROUS",at:[50.51600,2.65850],desc:"Parking de la résidence CROUS Gérard Philippe."},
+          {id:"p5",cat:"park",type:"park",text:"P",name:"Parking FSA Sud",at:[50.51520,2.65600],desc:"Parking au sud de la Faculté des Sciences Appliquées."},
+          {id:"p6",cat:"park",type:"park",text:"P",name:"Parking BU Béthune",at:[50.51710,2.65960],desc:"Parking de la Bibliothèque Universitaire."},
+          {id:"p7",cat:"park",type:"park",text:"P",name:"Parking École d'Ingénieurs",at:[50.51760,2.66010],desc:"Parking de l'École d'Ingénieurs (Hazebrouck)."},
+          {id:"p8",cat:"park",type:"park",text:"P",name:"Parking Salle des Sports",at:[50.51520,2.65460],desc:"Parking de la Salle des Sports."}
         ]
       }
     };
