@@ -359,14 +359,14 @@
 
     /*
      * Referentiels GPS: on projette les coordonnees pixel des plans schematiques
-     * sur la vraie carte OSM. Calibre sur le campus IUT de Bethune (50 31 N, 2 38 E).
-     * Ajuster nw/se si les polygones semblent decales par rapport aux batiments reels.
+     * sur la vraie carte OSM. Calibre precisement sur le campus IUT et Pole universitaire
+     * de Bethune (Rue de l'Universite, Technoparc Futura).
      */
     var REF={
-      iut: {nw:[50.5265,2.6412],se:[50.5218,2.6475],size:[1280,930],
-            center:[50.5243,2.6443],zoom:18,title:"Plan de l'IUT de Bethune"},
-      pole:{nw:[50.5285,2.6388],se:[50.5198,2.6548],size:[1308,924],
-            center:[50.5248,2.6468],zoom:16,title:"Plan du Pole de Bethune"}
+      iut: {nw:[50.5192,2.6522],se:[50.5142,2.6602],size:[1280,930],
+            center:[50.5170,2.6562],zoom:17,title:"Plan de l'IUT de Béthune"},
+      pole:{nw:[50.5198,2.6510],se:[50.5125,2.6610],size:[1308,924],
+            center:[50.5165,2.6565],zoom:16,title:"Plan du Pôle de Béthune"}
     };
 
     /* Convertit coordonnees pixel [x,y] -> GPS [lat,lng] */
